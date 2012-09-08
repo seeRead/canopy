@@ -36,6 +36,7 @@
                     <a class="brand" href="#">Canopy</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
+                            <li><a href="#locate">Locate</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Borough <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -86,9 +87,24 @@
             <div class="row">
                 <div id="map" class="span8"></div>
                 <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                    <div id="forms">
+                        <form id="selectors" class="example">
+                          <h2 class="listTitle">Tree species</h2>
+                          <select id="speciesList" multiple=true>
+                          </select>
+                          <h2 class="listTitle">Community Name</h2>
+                          <select id="communityList" multiple=true>
+                          </select>
+                          <h2 class="listTitle">Borough</h2>
+                          <select id="boroList" multiple=true>
+                            <option value="Brooklyn">Brooklyn</option>
+                            <option value="Manhattan">Manhattan</option>
+                            <option value="Bronx">Bronx</option>
+                            <option value="Queens">Queens</option>
+                            <option value="Staten Island">Staten Island</option>
+                          </select>
+                        </form>
+                    </div>
                 </div>
             </div>
 

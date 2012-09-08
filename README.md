@@ -4,4 +4,4 @@ An exploratory tool for New York City's street trees.  Built with [CartoDB](http
 
 [NYC Parks](http://www.nycgovparks.org/) & [DataKind](http://datakind.org), September 2012
 
-In collaboration with [andrewxhill](https://github.com/andrewxhill), [alaicano](https://github.com/alaiacano), [abelsonlive](https://github.com/abelsonlive) and many other very talented people.
+Check the humans.txt for credits.  Thanks!

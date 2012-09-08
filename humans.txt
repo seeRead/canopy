@@ -3,13 +3,20 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Andrew Hill         @andrewxhill
+    Adam Laiacano       @adamlaiacano
+    Kevin Wilson        khwilson (github)
+    Christoher Reed     @seereadnow
+    Claire Litherland   @ccl2138
+    Bennett Andrews     @bennetandrews
 
+    And Many more .......
 # THANKS
-
-    <name>
 
 # TECHNOLOGY COLOPHON
 
     HTML5, CSS3
     jQuery, Modernizr
+    CartoDb, Backbone
+    Underscore, R 
+    Python

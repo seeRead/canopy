@@ -35,13 +35,59 @@ $(document).ready(UTIL.loadEvents);
 // COMMON MODULE
     CANOPY.common = {
         init : function(){
-
 // CONFIG
-            console.log('inited');
             // disable cache for ajax reguests 
             $.ajaxSetup ({
                 //cache: false
             });
+
+            function initializeMap(){
+              // starting latitude and longitude for our map
+              var position = new L.LatLng(40.69,-73.9);
+              
+              // starting zoom
+              var zoom = 11; 
+
+              // is our Leaflet map object
+              var map = new L.Map('map').setView(position, zoom);
+
+              var user_name = "parks-datadive"; //change this to your username
+
+              var neighborhood_outline = new L.CartoDBLayer({
+                map: map,
+                user_name: user_name,
+                table_name: "nycd",
+                query: "SELECT * FROM {{table_name}}",
+                tile_style: "#{{table_name}}{polygon-fill:transparent; line-opacity:1; line-color: #FFFFFF;}",
+                interactivity: "cartodb_id",
+                featureClick: function(ev, latlng, pos, data) {alert(data)},
+                featureOver: function(){},
+                featureOut: function(){},
+                attribution: "CartoDB",
+                auto_bound: false
+              });
+              
+              map.addLayer(neighborhood_outline, true);
+
+              var desired_species = 'PLAC';
+              var example_species = new L.CartoDBLayer({
+                map: map,
+                user_name: user_name,
+                table_name: "alltrees_master",
+                query: "SELECT * FROM {{table_name}} where species2 = '" + desired_species +"'",
+                tile_style: "#{{table_name}}{   marker-fill:#FF3366; marker-width:1; marker-line-color:white; marker-line-width:0; marker-opacity:1; marker-line-opacity:1; marker-placement:point; marker-type:ellipse; marker-allow-overlap:true;}",
+                interactivity: "cartodb_id",
+                featureClick: function(ev, latlng, pos, data) {alert(data)},
+                featureOver: function(){},
+                featureOut: function(){},
+                attribution: "CartoDB",
+                auto_bound: false
+              });
+              map.addLayer(example_species);
+            }
+            initializeMap();
+
+
         }
     }
 }(window, document, jQuery));

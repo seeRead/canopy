@@ -87,6 +87,7 @@ $(document).ready(UTIL.loadEvents);
                     attribution: "CartoDB",
                     auto_bound: false
                 });
+                //map.addLayer(treeDiversity);
 
                 var trees = new L.CartoDBLayer({
                     map: map,
@@ -132,6 +133,8 @@ $(document).ready(UTIL.loadEvents);
                     attribution: "CartoDB",
                     auto_bound: false
                 });
+                //map.addLayer(treeHeight);
+                console.log(treeHeight);
 
                 // QUERY UDPDATE
                 function updateQuery(){
@@ -190,29 +193,29 @@ $(document).ready(UTIL.loadEvents);
                     });
                     var speciesInfos = new speciesInfoModel();
                     speciesInfos.fetch();
-                  speciesInfos.bind('reset', function() {
-                       speciesInfos.each(function(p) {
-                        if (p.get('image') != ''){
-                            var img = new Image();
-                            img.src = p.get('image');
-                            img.width = 220;
-                            img.onload = function(){
-                                $("#species_image").append(img);
+                      speciesInfos.bind('reset', function() {
+                           speciesInfos.each(function(p) {
+                            if (p.get('image') != ''){
+                                var img = new Image();
+                                img.src = p.get('image');
+                                img.width = 220;
+                                img.onload = function(){
+                                    $("#species_image").append(img);
+                                }
                             }
-                        }
-                        if (p.get('description') != ''){
-                            $("#species_note").text(p.get('description'));
-                        } else if (p.get('distribution') != ''){
-                            $("#species_note").text(p.get('distribution'));
-                        } if (p.get('habitat') != ''){
-                            $("#species_note").text(p.get('habitat'));
-                        }
-                        // var newOption = $("<option>");
-                        // newOption.text(p.get('common_name') + "    (" + p.get('total') + ")");
-                        // newOption.attr('value',p.get('species_code'));
-                        console.log()
+                            if (p.get('description') != ''){
+                                $("#species_note").text(p.get('description'));
+                            } else if (p.get('distribution') != ''){
+                                $("#species_note").text(p.get('distribution'));
+                            } if (p.get('habitat') != ''){
+                                $("#species_note").text(p.get('habitat'));
+                            }
+                            // var newOption = $("<option>");
+                            // newOption.text(p.get('common_name') + "    (" + p.get('total') + ")");
+                            // newOption.attr('value',p.get('species_code'));
+                            console.log()
+                          });
                       });
-                  });
                     }
                     updateQuery();
                 }
@@ -309,17 +312,19 @@ $(document).ready(UTIL.loadEvents);
                 $("#boroList").chosen({no_results_text: "No results matched"}); // jQuery version
 
                 // filter buttons
-                //$('.filter').each(function(i){
-                    //$(this).toggle(function(){
-                            //console.log('adding');
-                            //console.log($(this).attr('id'));
-                            //map.addLayer($(this).attr('id'));
-                        //}, function(){
-                            //console.log('removing');
-                            //map.addLayer($(this).attr('id'));
-                        //}
-                    //);
-                //});
+                $('.filter').click(function(){
+                    //TODO remove eval
+                    var layerId = eval($(this).attr('id'));
+                    swapLayer(layerId);
+                    map.addLayer($(this).attr('id'));
+                });
+
+                function swapLayer(layerId){
+                    if(!map.hasLayer(layerId)){
+                        console.log(layerId);
+                        map.addLayer(layerId);
+                    }
+                }
                 //map.addLayer(treeHeight);
                 //map.addLayer(treeDiversity); 
 

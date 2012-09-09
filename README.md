@@ -1,10 +1,12 @@
 #Canopy
+Check it out [here]( http://seeread.github.com/canopy).
 
 ##Data repos
 https://github.com/alaiacano/ParksDataDive2012
 https://github.com/abelsonlive/ParksDataDive2012
 
 ##TODO
+- default view 
 - tooltip
 - cross filter numbers / species for other current filters
 - geolocation utility
@@ -30,8 +32,6 @@ https://github.com/abelsonlive/ParksDataDive2012
 
 ## Priority Areas
 - increasing human population
-- decreasing tree population
-- high imperviousness
 
 ## Site Factors
 - higher sidewalk width

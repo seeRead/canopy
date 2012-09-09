@@ -73,6 +73,21 @@ $(document).ready(UTIL.loadEvents);
                 // });
                 // map.addLayer(neighborhood_outline);
 
+
+                var treeDiversity = new L.CartoDBLayer({
+                    map: map,
+                    user_name: user_name,
+                    table_name: "alltrees_master",
+                    query: "SELECT {{table_name}}.the_geom_webmercator,lk_species.popular_family as family FROM {{table_name}}, lk_species where {{table_name}}.species2 = lk_species.code ORDER BY lk_species.popular_family DESC",
+                    tile_style: "#{{table_name}}{ marker-fill:#bababa; marker-width:1; marker-line-color:white; marker-line-width:0.0; marker-opacity:0.6; marker-line-opacity:1; marker-placement:point; marker-type:ellipse; marker-allow-overlap:true; [family='OAK']{marker-fill:#BEAED4 } [family='MAPLE']{marker-fill:#FDC086 } [family='PINE']{marker-fill:#FFFF99 } [family='ELM']{marker-fill:#386CB0 } [family='ASH']{marker-fill:#F0027F } [family='CHERRY']{marker-fill:#BF5B17} [zoom>12]{marker-width:3;}}",
+                    interactivity: "cartodb_id",
+                    featureClick: function(ev, latlng, pos, data) { },
+                    featureOver: function(){},
+                    featureOut: function(){},
+                    attribution: "CartoDB",
+                    auto_bound: false
+                });
+
                 var trees = new L.CartoDBLayer({
                     map: map,
                     user_name: user_name,
@@ -103,6 +118,20 @@ $(document).ready(UTIL.loadEvents);
                     auto_bound: false
                 });
                 map.addLayer(diversity); 
+
+                var treeHeight = new L.CartoDBLayer({
+                    map: map,
+                    user_name: user_name,
+                    table_name: "alltrees_master",
+                    query: "SELECT nycb2010.the_geom_webmercator, count(*) as total FROM nycb2010, alltrees_master WHERE st_intersects(nycb2010.the_geom_webmercator,alltrees_master.the_geom_webmercator) GROUP BY nycb2010.the_geom_webmercator",
+                    tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:1; line-opacity:1; polygon-opacity:1; } [total<=297] { polygon-fill:#B10026 } [total<=150] { polygon-fill:#E31A1C } [total<=750] { polygon-fill:#FC4E2A } [total<=40] { polygon-fill:#FD8D3C } [total<=20] { polygon-fill:#FEB24C } [total<=10] { polygon-fill:#FED976 } [total<=5] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
+                    interactivity: "cartodb_id",
+                    featureClick: function(ev, latlng, pos, data) {},
+                    featureOver: function(){},
+                    featureOut: function(){},
+                    attribution: "CartoDB",
+                    auto_bound: false
+                });
 
                 // QUERY UDPDATE
                 function updateQuery(){
@@ -148,13 +177,12 @@ $(document).ready(UTIL.loadEvents);
                     $("#speciesList option:selected").each(function () {
                         species.push($(this).val())
                     });
+
+
+                    // SPECIES INFO
                     $("#species_image").html('');
                     if (species.length > 0){
                         speciesNameModifier = " species2 in ('"+species.join("','")+"') ";
-                    // update info
-                    // TODO populate sidebar with species info 
-                    // species_info
-                    // speciesInfo 
                     console.log("select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"' ")
                     var speciesInfoModel = CartoDB.CartoDBCollection.extend({
                         table:'species_info',
@@ -279,6 +307,22 @@ $(document).ready(UTIL.loadEvents);
 
                 // Neighborhoods
                 $("#boroList").chosen({no_results_text: "No results matched"}); // jQuery version
+
+                // filter buttons
+                //$('.filter').each(function(i){
+                    //$(this).toggle(function(){
+                            //console.log('adding');
+                            //console.log($(this).attr('id'));
+                            //map.addLayer($(this).attr('id'));
+                        //}, function(){
+                            //console.log('removing');
+                            //map.addLayer($(this).attr('id'));
+                        //}
+                    //);
+                //});
+                //map.addLayer(treeHeight);
+                //map.addLayer(treeDiversity); 
+
 
 // geolocation
             function get_location() {

@@ -6,10 +6,10 @@
     Adam Laiacano       @adamlaiacano
     Andrew Hill         @andrewxhill
     Bennett Andrews     @bennettandrews
-    Brian Abelson       @abelsonlive
+    Brian Abelson       @brianabelson (abelsonlive on github)
     Christoher Reed     @seereadnow (seeread on github)
     Claire Litherland   @ccl2138
-    Kevin Wilson        khwilson (github)
+    Kevin Wilson        khwilson on github
 
     And many more .......
 

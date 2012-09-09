@@ -86,13 +86,37 @@ $(document).ready(UTIL.loadEvents);
                     attribution: "CartoDB",
                     auto_bound: false
                 });
-                map.addLayer(trees);
+                //map.addLayer(trees);
+
+                //diversityByBlock chloropleth
+                var diversity = new L.CartoDBLayer({
+                    map: map,
+                    user_name: user_name,
+                    table_name: "alltrees_master",
+                    query: "SELECT nycb2010.the_geom_webmercator, count(*) as total FROM nycb2010, alltrees_master WHERE st_intersects(nycb2010.the_geom_webmercator,alltrees_master.the_geom_webmercator) GROUP BY nycb2010.the_geom_webmercator,alltrees_master.species2",
+                    tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:0; line-opacity:1; polygon-opacity:1; } [total<=150] { polygon-fill:#B10026 } [total<=50] { polygon-fill:#E31A1C } [total<=15] { polygon-fill:#FC4E2A } [total<=10] { polygon-fill:#FD8D3C } [total<=6] { polygon-fill:#FEB24C } [total<=3] { polygon-fill:#FED976 } [total<=1] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
+                    interactivity: "cartodb_id",
+                    featureClick: function(ev, latlng, pos, data) {},
+                    featureOver: function(){},
+                    featureOut: function(){},
+                    attribution: "CartoDB",
+                    auto_bound: false
+                });
+                map.addLayer(diversity); 
 
                 // QUERY UDPDATE
                 function updateQuery(){
-                    // update map
+                    var hasModifiers = false;
                     var all_modifiers = [speciesNameModifier, commNameModifier, boroNameModifier];
-                    //console.log(all_modifiers)
+                    $.each(all_modifiers, function(i,v){
+                        if(v !==false){
+                            hasModifiers = true;
+                        }
+                    });
+                    if(!map.hasLayer(trees) && hasModifiers){
+                        map.addLayer(trees);
+                    }  
+                    // update map
                     var join_by_and = '';
                     var sql = "SELECT * FROM {{table_name}} ";
                     var modifier = "";
@@ -105,7 +129,6 @@ $(document).ready(UTIL.loadEvents);
                     if (modifier != ""){
                         sql += " WHERE " + modifier;
                     }
-                    trees.setQuery(sql);
                     // update info
                     // TODO populate sidebar with species info 
                     // species_info
@@ -115,6 +138,12 @@ $(document).ready(UTIL.loadEvents);
                     //});
                     //var speciesInfos = new speciesInfoModel();
                     //speciesInfos.fetch();
+                    if (hasModifiers){
+                        trees.setQuery(sql);
+                    }else {
+                        trees.hide();
+                    }
+
                 }
 
                 // SPECIES FILTER 

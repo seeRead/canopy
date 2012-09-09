@@ -3,15 +3,15 @@
 
 # TEAM
 
-    Andrew Hill         @andrewxhill
     Adam Laiacano       @adamlaiacano
-    Kevin Wilson        khwilson (github)
-    Christoher Reed     @seereadnow
-    Claire Litherland   @ccl2138
+    Andrew Hill         @andrewxhill
     Bennett Andrews     @bennettandrews
+    Brian Abelson       @abelsonlive
+    Christoher Reed     @seereadnow (seeread on github)
+    Claire Litherland   @ccl2138
+    Kevin Wilson        khwilson (github)
 
-    And Many more .......
-# THANKS
+    And many more .......
 
 # TECHNOLOGY COLOPHON
 

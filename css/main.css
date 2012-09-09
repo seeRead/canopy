@@ -6,13 +6,12 @@ body {
     padding-bottom: 40px;
 }
 #map{
-    height: 500px;
+    height: 450px;
     background: black;
 }
-.navbar-form{
+#selectors{
     margin-top:5px;
 }
-
 
 
 

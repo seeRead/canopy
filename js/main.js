@@ -87,7 +87,7 @@ $(document).ready(UTIL.loadEvents);
                 // });
                 // map.addLayer(neighborhood_outline);
 
-                var example_species = new L.CartoDBLayer({
+                var trees = new L.CartoDBLayer({
                     map: map,
                     user_name: user_name,
                     table_name: "alltrees_master",
@@ -100,12 +100,13 @@ $(document).ready(UTIL.loadEvents);
                     attribution: "CartoDB",
                     auto_bound: false
                 });
-                map.addLayer(example_species);
+                map.addLayer(trees);
 
                 // QUERY UDPDATE
                 function updateQuery(){
+                    // update map
                     var all_modifiers = [speciesNameModifier, commNameModifier, boroNameModifier];
-                    console.log(all_modifiers)
+                    //console.log(all_modifiers)
                     var join_by_and = '';
                     var sql = "SELECT * FROM {{table_name}} ";
                     var modifier = "";
@@ -118,7 +119,16 @@ $(document).ready(UTIL.loadEvents);
                     if (modifier != ""){
                         sql += " WHERE " + modifier;
                     }
-                    example_species.setQuery(sql)
+                    trees.setQuery(sql);
+                    // update info
+                    // TODO populate sidebar with species info 
+                    // species_info
+                    //// speciesInfo 
+                    //var speciesInfoModel = CartoDB.CartoDBCollection.extend({
+                        //sql: "select associations description, distribution, habitiat, image, morphology, species_code from species_info where species_code = '' and total>0 order by total desc", //public table
+                    //});
+                    //var speciesInfos = new speciesInfoModel();
+                    //speciesInfos.fetch();
                 }
 
                 // SPECIES FILTER 
@@ -139,6 +149,9 @@ $(document).ready(UTIL.loadEvents);
                 $("#speciesList").change(function(e){
                     updateSpeciesFilter();
                 })
+
+
+
 
                 // COMMUNITY FILTER 
                 var commNameModifier = false
@@ -189,7 +202,7 @@ $(document).ready(UTIL.loadEvents);
                 var speciesNamesModel = CartoDB.CartoDBCollection.extend({
                     sql: "select common_name, species_code, total from species_name_codes where common_name != '' and total>0 order by total desc", //public table
                 });
-                var speciesNames = new speciesNamesModel()
+                var speciesNames = new speciesNamesModel();
                 speciesNames.fetch();
 
                 speciesNames.bind('reset', function() {
@@ -198,8 +211,10 @@ $(document).ready(UTIL.loadEvents);
                         newOption.text(p.get('common_name') + "    (" + p.get('total') + ")");
                         newOption.attr('value',p.get('species_code'));
 
-                        $('#speciesList').append(newOption)
+                        $('#speciesList').append(newOption);
                     });
+                    
+                    //chosen for select box
                     $("#speciesList").chosen({no_results_text: "No results matched"}); // jQuery version
                 });
 
@@ -217,6 +232,8 @@ $(document).ready(UTIL.loadEvents);
                         newOption.attr('value',p.get('name'));
                         $('#communityList').append(newOption)
                     });
+
+                    //chosen for select box
                     $("#communityList").chosen({no_results_text: "No results matched"}); // jQuery version
                 });
 

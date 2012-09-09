@@ -9,10 +9,7 @@
         <title>Canopy: NYC Parks and DataKind 2012</title>
         <meta name="description" content="Using data from NYC.gov and the Parks Department, we built this site for learning more about the trees in New York City.">
         <meta name="viewport" content="width=device-width">
-
         <link rel="stylesheet" href="css/bootstrap.min.css">
-
-
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.3.1/leaflet.css" />
@@ -35,19 +32,6 @@
                     </a>
                     <a class="brand" href="#">Canopy</a>
                     <div class="nav-collapse collapse">
-                        <form id="selectors" class="navbar-form example pull-left">
-                          <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
-                          </select>
-                          <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
-                            <option value="Brooklyn">Brooklyn</option>
-                            <option value="Manhattan">Manhattan</option>
-                            <option value="Bronx">Bronx</option>
-                            <option value="Queens">Queens</option>
-                            <option value="Staten Island">Staten Island</option>
-                          </select>
-                          <select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
-                          </select>
-                        </form>
                         <ul class="nav">
                             <li><a href="#locate">Locate</a></li>
                             <li><a href="#about">About</a></li>
@@ -64,6 +48,23 @@
                 <!--<p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>-->
                 <!--<p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>-->
             <!--</div>-->
+            <div class="row">
+                <div class="span8">
+                    <form id="selectors">
+                        <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
+                        </select>
+                        <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
+                            <option value="Brooklyn">Brooklyn</option>
+                            <option value="Manhattan">Manhattan</option>
+                            <option value="Bronx">Bronx</option>
+                            <option value="Queens">Queens</option>
+                            <option value="Staten Island">Staten Island</option>
+                        </select>
+                        <select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
+                        </select>
+                    </form>
+                </div>
+            </div>
             <div class="row">
                 <div id="map" class="span8"></div>
                 <div class="span4">

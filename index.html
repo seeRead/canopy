@@ -35,43 +35,23 @@
                     </a>
                     <a class="brand" href="#">Canopy</a>
                     <div class="nav-collapse collapse">
+                        <form id="selectors" class="navbar-form example pull-left">
+                          <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
+                          </select>
+                          <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
+                            <option value="Brooklyn">Brooklyn</option>
+                            <option value="Manhattan">Manhattan</option>
+                            <option value="Bronx">Bronx</option>
+                            <option value="Queens">Queens</option>
+                            <option value="Staten Island">Staten Island</option>
+                          </select>
+                          <select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
+                          </select>
+                        </form>
                         <ul class="nav">
                             <li><a href="#locate">Locate</a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Borough <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Brooklyn</a></li>
-                                    <li><a href="#">Bronx</a></li>
-                                    <li><a href="#">Manahattan</a></li>
-                                    <li><a href="#">Queens</a></li>
-                                    <li><a href="#">Staten Island</a></li>
-                                    <!--<li class="divider"></li>-->
-                                    <!--<li class="nav-header">Nav header</li>-->
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Species <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Norway Maple</a></li>
-                                    <li><a href="#">Red Maple</a></li>
-                                    <li><a href="#">Silver Maple</a></li>
-                                    <li><a href="#">Green Ash</a></li>
-                                    <li><a href="#">Honeylocust</a></li>
-                                    <li><a href="#">Littleleaf Linden</a></li>
-                                    <li><a href="#">Callery Pear</a></li>
-                                    <li><a href="#">Pin Oak</a></li>
-                                    <li><a href="#">London Plane Tree</a></li>
-                                    <li><a href="#">Ginko</a></li>
-                                    <!--<li class="divider"></li>-->
-                                    <!--<li class="nav-header">Nav header</li>-->
-                                </ul>
-                            </li>
                             <li><a href="#about">About</a></li>
                         </ul>
-                        <form class="navbar-form pull-right">
-                            <input class="span2" type="search" placeholder="Brooklyn...">
-                            <button type="submit" class="btn">Search</button>
-                        </form>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
@@ -87,54 +67,27 @@
             <div class="row">
                 <div id="map" class="span8"></div>
                 <div class="span4">
-                    <div id="forms">
-                        <form id="selectors" class="example">
-                          <h2 class="listTitle">Tree species</h2>
-                          <select id="speciesList" multiple=true>
-                          </select>
-                          <h2 class="listTitle">Community Name</h2>
-                          <select id="communityList" multiple=true>
-                          </select>
-                          <h2 class="listTitle">Borough</h2>
-                          <select id="boroList" multiple=true>
-                            <option value="Brooklyn">Brooklyn</option>
-                            <option value="Manhattan">Manhattan</option>
-                            <option value="Bronx">Bronx</option>
-                            <option value="Queens">Queens</option>
-                            <option value="Staten Island">Staten Island</option>
-                          </select>
-                        </form>
-                    </div>
+                  <p></p>
                 </div>
             </div>
 
             <!-- Example row of columns -->
             <div class="row">
-                <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
-                </div>
-                <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
-               </div>
-                <div class="span4">
-                    <h2>Heading</h2>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p><a class="btn" href="#">View details &raquo;</a></p>
-                </div>
+                <!--<div class="span4">-->
+                    <!--<h2>Heading</h2>-->
+                    <!--<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>-->
+                    <!--<p><a class="btn" href="#">View details &raquo;</a></p>-->
+                <!--</div>-->
             </div>
 
             <hr>
             <div id="about">
               <h1>About</h1>
               <p>This project was the result of a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 with the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks &amp; Recreation Department</a>. 
+              <p><a href="./humans.txt">Credits</a></p>
             </div>
 
             <footer>
-            
             </footer>
 
         </div> <!-- /container -->
@@ -148,7 +101,7 @@
         <script src="js/main.js"></script>
 
         <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            var _gaq=[['_setAccount','UA-28486765-1'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));

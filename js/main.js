@@ -45,14 +45,15 @@ $(document).ready(UTIL.loadEvents);
               if (Modernizr.geolocation) {
                 navigator.geolocation.getCurrentPosition(show_map);
               } else {
-                // no native support; maybe try Gears?
+                  //NO geo
               }
             }
-            get_location();
 
             function show_map(position){
                 console.log(position);
             };
+
+            $('#locate').click(get_location());
 //MAP
             var user_name = "parks-datadive"; //change this to your username
 
@@ -184,7 +185,6 @@ $(document).ready(UTIL.loadEvents);
                     user: user_name // you should put your account name here
                 });
 
-
                 // Species
                 var speciesNamesModel = CartoDB.CartoDBCollection.extend({
                     sql: "select common_name, species_code, total from species_name_codes where common_name != '' and total>0 order by total desc", //public table
@@ -200,6 +200,7 @@ $(document).ready(UTIL.loadEvents);
 
                         $('#speciesList').append(newOption)
                     });
+                    $("#speciesList").chosen({no_results_text: "No results matched"}); // jQuery version
                 });
 
                 // Neighborhood
@@ -216,10 +217,15 @@ $(document).ready(UTIL.loadEvents);
                         newOption.attr('value',p.get('name'));
                         $('#communityList').append(newOption)
                     });
+                    $("#communityList").chosen({no_results_text: "No results matched"}); // jQuery version
                 });
+
+                // Neighborhoods
+                $("#boroList").chosen({no_results_text: "No results matched"}); // jQuery version
             }
             // Start the map
             initialize();
+
         }
     }
 }(window, document, jQuery));

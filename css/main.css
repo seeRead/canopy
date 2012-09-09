@@ -16,6 +16,16 @@ body {
     cursor: pointer;
 }
 
+#species_image img{
+    width: 220px; 
+    height: auto;
+}
+#species_note { 
+    width: 220px; 
+    height: 100px; 
+    font-size: 0.8em; 
+    overflow-y: scroll;
+}
 
 
 /* @group Base */
@@ -414,6 +424,4 @@ body {
   padding: 4px 5px 4px 20px;
   direction: rtl;
 }
-#species_image img{ width: 220px; height: auto;}
-#species_note { width: 220px; height: 100px; font-size: 0.8em; overflow: scroll;}
 /* @end */

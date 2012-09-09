@@ -1,6 +1,7 @@
 #Canopy
 
 ##TODO
+- cross filter numbers / species for other current filters
 - geolocation utility
 - color legend for species 
 - histogram for species distribution by neighborhood, guidelines for achieving benchmarks

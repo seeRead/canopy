@@ -129,15 +129,8 @@ $(document).ready(UTIL.loadEvents);
                     if (modifier != ""){
                         sql += " WHERE " + modifier;
                     }
-                    // update info
-                    // TODO populate sidebar with species info 
-                    // species_info
-                    //// speciesInfo 
-                    //var speciesInfoModel = CartoDB.CartoDBCollection.extend({
-                        //sql: "select associations description, distribution, habitiat, image, morphology, species_code from species_info where species_code = '' and total>0 order by total desc", //public table
-                    //});
-                    //var speciesInfos = new speciesInfoModel();
-                    //speciesInfos.fetch();
+
+
                     if (hasModifiers){
                         trees.setQuery(sql);
                     }else {
@@ -155,8 +148,43 @@ $(document).ready(UTIL.loadEvents);
                     $("#speciesList option:selected").each(function () {
                         species.push($(this).val())
                     });
+                    $("#species_image").html('');
                     if (species.length > 0){
-                        speciesNameModifier = " species2 in ('"+species.join("','")+"') "
+                        speciesNameModifier = " species2 in ('"+species.join("','")+"') ";
+                    // update info
+                    // TODO populate sidebar with species info 
+                    // species_info
+                    // speciesInfo 
+                    console.log("select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"' ")
+                    var speciesInfoModel = CartoDB.CartoDBCollection.extend({
+                        table:'species_info',
+                        sql: "select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"'", //public table
+                    });
+                    var speciesInfos = new speciesInfoModel();
+                    speciesInfos.fetch();
+                  speciesInfos.bind('reset', function() {
+                       speciesInfos.each(function(p) {
+                        if (p.get('image') != ''){
+                            var img = new Image();
+                            img.src = p.get('image');
+                            img.width = 220;
+                            img.onload = function(){
+                                $("#species_image").append(img);
+                            }
+                        }
+                        if (p.get('description') != ''){
+                            $("#species_note").append(p.get('description'));
+                        } else if (p.get('distribution') != ''){
+                            $("#species_note").append(p.get('distribution'));
+                        } if (p.get('habitat') != ''){
+                            $("#species_note").append(p.get('habitat'));
+                        }
+                        // var newOption = $("<option>");
+                        // newOption.text(p.get('common_name') + "    (" + p.get('total') + ")");
+                        // newOption.attr('value',p.get('species_code'));
+                        console.log()
+                      });
+                  });
                     }
                     updateQuery();
                 }

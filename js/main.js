@@ -94,7 +94,7 @@ $(document).ready(UTIL.loadEvents);
                     user_name: user_name,
                     table_name: "nycb2010",
                     query: "SELECT nycb2010.the_geom_webmercator, count( distinct alltrees_master.species2) as total FROM nycb2010, alltrees_master WHERE st_intersects(nycb2010.the_geom_webmercator,alltrees_master.the_geom_webmercator) GROUP BY nycb2010.the_geom_webmercator",
-                    tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:0; line-opacity:0.7; polygon-opacity:0.6; polygon-fill: black;  [total<=33] { polygon-fill:#B10026 } [total<=25] { polygon-fill:#E31A1C } [total<=20] { polygon-fill:#FC4E2A; polygon-opacity:0.5;  } [total<=15] { polygon-fill:#FD8D3C } [total<=10] { polygon-fill:#FEB24C; polygon-opacity:0.4;  } [total<=5] { polygon-fill:#FED976 } [total<=2] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
+                    tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:0; line-opacity:0.7; polygon-opacity:0.6; polygon-fill: black;  [total<=33] { polygon-fill:#B10026 } [total<=20] { polygon-fill:#E31A1C } [total<=15] { polygon-fill:#FC4E2A; polygon-opacity:0.5;  } [total<=10] { polygon-fill:#FD8D3C } [total<=8] { polygon-fill:#FEB24C; polygon-opacity:0.4;  } [total<=5] { polygon-fill:#FED976 } [total<=2] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
                     interactivity: "cartodb_id",
                     featureClick: function(ev, latlng, pos, data) {},
                     featureOver: function(){},

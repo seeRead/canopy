@@ -1,6 +1,7 @@
 #Canopy
 
 ##TODO
+- tooltip
 - cross filter numbers / species for other current filters
 - geolocation utility
 - color legend for species 
@@ -39,4 +40,4 @@ An exploratory tool for New York City's street trees.  Built with [CartoDB](http
 
 [NYC Parks](http://www.nycgovparks.org/) & [DataKind](http://datakind.org), September 2012
 
-Check the humans.txt for credits.  Thanks!  If you
+Check the humans.txt for credits.  Thanks!

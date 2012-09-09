@@ -315,16 +315,15 @@ $(document).ready(UTIL.loadEvents);
                 $('.filter').click(function(){
                     //TODO remove eval
                     var layerId = eval($(this).attr('id'));
-                    swapLayer(layerId);
-                    map.addLayer($(this).attr('id'));
-                });
-
-                function swapLayer(layerId){
-                    if(!map.hasLayer(layerId)){
-                        console.log(layerId);
+                    if(map.hasLayer(layerId)){
+                        $(this).removeClass('active');
+                        map.removeLayer(layerId);
+                    } else {
+                        $(this).addClass('active');
                         map.addLayer(layerId);
                     }
-                }
+                });
+
                 //map.addLayer(treeHeight);
                 //map.addLayer(treeDiversity); 
 

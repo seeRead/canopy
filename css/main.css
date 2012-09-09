@@ -24,7 +24,7 @@ body {
     width: 220px; 
     height: 100px; 
     font-size: 0.8em; 
-    overflow-y: scroll;
+    overflow: auto;
 }
 
 

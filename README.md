@@ -1,5 +1,9 @@
 #Canopy
 
+##Data repos
+https://github.com/alaiacano/ParksDataDive2012
+https://github.com/abelsonlive/ParksDataDive2012
+
 ##TODO
 - tooltip
 - cross filter numbers / species for other current filters

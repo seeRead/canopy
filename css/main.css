@@ -12,7 +12,9 @@ body {
 #selectors{
     margin-top:5px;
 }
-
+.nav li {
+    cursor: pointer;
+}
 
 
 

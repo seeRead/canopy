@@ -41,23 +41,9 @@ $(document).ready(UTIL.loadEvents);
                 //cache: false
             });
 //GEOLOCATE
-            function get_location() {
-              if (Modernizr.geolocation) {
-                navigator.geolocation.getCurrentPosition(show_map);
-              } else {
-                  //NO geo
-              }
-            }
-
-            function show_map(position){
-                console.log(position);
-            };
-
-            $('#locate').click(get_location());
 //MAP
             var user_name = "parks-datadive"; //change this to your username
 
-            function initialize(){
                 // starting latitude and longitude for our map
                 var position = new L.LatLng(40.69,-73.9);
                 
@@ -150,9 +136,6 @@ $(document).ready(UTIL.loadEvents);
                     updateSpeciesFilter();
                 })
 
-
-
-
                 // COMMUNITY FILTER 
                 var commNameModifier = false
                 function updateCommunityFilter() {
@@ -239,10 +222,26 @@ $(document).ready(UTIL.loadEvents);
 
                 // Neighborhoods
                 $("#boroList").chosen({no_results_text: "No results matched"}); // jQuery version
-            }
-            // Start the map
-            initialize();
 
+// geolocation
+            function get_location() {
+              if (Modernizr.geolocation) {
+                console.log('locating');
+                navigator.geolocation.getCurrentPosition(show_map);
+              } else {
+                  //NO geo
+              }
+            }
+
+            function show_map(position){
+                var zoom = 16;
+                var position = new L.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setView(position, zoom);
+            };
+
+            $('#locate').click(function(){
+                get_location();
+            });
         }
     }
 }(window, document, jQuery));

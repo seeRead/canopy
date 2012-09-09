@@ -78,7 +78,7 @@ $(document).ready(UTIL.loadEvents);
                     user_name: user_name,
                     table_name: "alltrees_master",
                     query: "SELECT * FROM {{table_name}}",
-                    tile_style: "#{{table_name}}{   marker-fill:#FF3366; marker-width:2; marker-line-color:white; marker-line-width:0; marker-opacity:1; marker-line-opacity:1; marker-placement:point; marker-type:ellipse; marker-allow-overlap:true;}    #{{table_name}}::halo{ [zoom>14]   {    marker-fill:transparent;    marker-width:6;    marker-line-color:black;    marker-line-width:1.6;    marker-opacity:0.3;    marker-line-opacity:0.5;    marker-placement:point;    marker-type:ellipse;    marker-allow-overlap:true; }}",
+                    tile_style: "#{{table_name}}{   marker-fill:#0099FF; marker-width:1.5; marker-line-color:white; marker-line-width:0; marker-opacity:1; marker-line-opacity:1; marker-placement:point; marker-type:ellipse; marker-allow-overlap:true; [zoom>11]{marker-width:2;} }   #{{table_name}}::halo {    [zoom>12]   {    marker-line-color:#33aaff;    marker-width:5;    marker-fill: transparent;    marker-line-width:1;    marker-opacity:1;    marker-line-opacity:1;    marker-placement:point;    marker-type:ellipse;    marker-allow-overlap:true; } } #{{table_name}}::halobig {    [zoom>13]   {    marker-line-color:#33aaff;    marker-width:10;    marker-fill: transparent;    marker-line-width:1;    marker-opacity:1;    marker-line-opacity:1;    marker-placement:point;    marker-type:ellipse;    marker-allow-overlap:true; } }",
                     interactivity: "cartodb_id",
                     featureClick: function(ev, latlng, pos, data) { },
                     featureOver: function(){},

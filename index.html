@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Canopy: NYC Parks and DataKind 2012</title>
+        <title>Canopy: NYC Street Tree Map</title>
         <meta name="description" content="Using data from NYC.gov and the Parks Department, we built this site for learning more about the trees in New York City.">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -33,7 +33,6 @@
                     <a class="brand" href="#">Canopy</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                          <li><a id="locate">Locate</a></li>
                             <li><a href="#about">About</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
@@ -49,12 +48,10 @@
                 <!--<p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>-->
             <!--</div>-->
             <div class="row">
-                <div class="span8">
-                </div>
-            </div>
-            <div class="row">
                 <div id="map" class="span8"></div>
                 <div class="span4">
+                  <p><a id="locate" class="btn">Geolocate</a></p>
+                  <hr/>
                     <form id="selectors">
                         <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
                         </select>
@@ -73,29 +70,27 @@
                 </div>
             </div>
 
-            <!-- Example row of columns -->
             <div class="submap row">
-                <div class="span3">
-                  <p><a id="diversity" class="btn filter active">Diversity block (chloropleth)</a></p>
-                    <!--<h2>Heading</h2>-->
-                    <!--<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>-->
-                    <!--<p><a class="btn" href="#">View details &raquo;</a></p>-->
-                </div>
-                <div class="span3">
-                  <p><a id="treeDiversity" class="btn filter">Common Tree Family Diversity</a></p>
-                </div>
-                <div class="span3">
-                  <p><a id="treeHeight" class="btn filter">Tree Height</a></p>
+                <div class="span12">
+                  <p><strong>Layers : </strong>
+                  <button id="diversity" class="btn filter active">Diversity by Census Block (chloropleth)</button>
+                  <button id="commonFamilies" class="btn filter">Common Tree Families</button>
+                  <button id="treeHeight" class="btn filter">Tree Height by Census Block</button>
+                  </p>
                 </div>
             </div>
 
             <hr>
             <div id="about">
-              <h1>About</h1>
-              <p>This project was the result of a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 with the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks &amp; Recreation Department</a>. </p>
+              <h2>About</h2>
+              <p>You can view the location of street trees throughout New York City via the filters on the right sidebar while the buttons along the bottom load different layers.</p>
+              <p>The views are generated from data provided by the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks Department</a>.</p>
+              <p>The data was cleaned, munged, analyzed and presented by our team at a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 at <a href="http://www.sva.edu/" target="_blank">SVA</a>.</p>
               <p>Species info from <a href="http://eol.org/" target="_blank">Encyclopedia of Life</a>.<p>
               <p><a href="./humans.txt">Credits</a></p>
+              <h2>Actions</h2>
               <p><a href="http://www.nycgovparks.org/services/forestry/request" target="_blank">Make a tree request</a></p>
+              <a href="https://github.com/seeread/canopy" target="_blank">Check out the repos</a>
             </div>
 
             <footer>

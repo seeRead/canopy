@@ -2,15 +2,13 @@
 Check it out [here]( http://seeread.github.com/canopy).
 
 ##Data repos
-https://github.com/alaiacano/ParksDataDive2012
-https://github.com/abelsonlive/ParksDataDive2012
+- https://github.com/alaiacano/ParksDataDive2012
+- https://github.com/abelsonlive/ParksDataDive2012
 
 ##TODO
-- default view 
-- tooltip
+- tooltips
+- dynamic color legend for species, values (via backbone)
 - cross filter numbers / species for other current filters
-- geolocation utility
-- color legend for species 
 - histogram for species distribution by neighborhood, guidelines for achieving benchmarks
 - Filter by viewable area
 - Filter by radius from geolocation
@@ -20,7 +18,6 @@ https://github.com/abelsonlive/ParksDataDive2012
 - request tool with reporting
 - more info about trees (origin etc.)
 - cultivar level info
-
 
 ## Species Characteristics to be explored
 - hardiness

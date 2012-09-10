@@ -184,6 +184,7 @@ $(document).ready(UTIL.loadEvents);
 
                     // SPECIES INFO
                     $("#species_image").html('');
+                    $("#species_note").text('');
                     if (species.length > 0){
                         speciesNameModifier = " species2 in ('"+species.join("','")+"') ";
                     console.log("select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"' ")

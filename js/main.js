@@ -78,14 +78,20 @@ $(document).ready(UTIL.loadEvents);
                 user_name: user_name,
                 table_name: "alltrees_master",
                 query: "SELECT * FROM {{table_name}}",
-                tile_style: "#{{table_name}}{   marker-fill:#0099FF; marker-width:1.5; marker-line-color:white; marker-line-width:0; marker-opacity:1; marker-line-opacity:1; marker-placement:point; marker-type:ellipse; marker-allow-overlap:true; [zoom>11]{marker-width:2;} }   #{{table_name}}::halo {    [zoom>12]   {    marker-line-color:#33aaff;    marker-width:5;    marker-fill: transparent;    marker-line-width:1;    marker-opacity:1;    marker-line-opacity:1;    marker-placement:point;    marker-type:ellipse;    marker-allow-overlap:true; } } #{{table_name}}::halobig {    [zoom>13]   {    marker-line-color:#33aaff;    marker-width:10;    marker-fill: transparent;    marker-line-width:1;    marker-opacity:1;    marker-line-opacity:1;    marker-placement:point;    marker-type:ellipse;    marker-allow-overlap:true; } }",
+                tile_style: "#{{table_name}}"+
+                    "{ line-color:#FFFFFF; line-width:1; line-opacity:1; marker-width: 2; marker-fill:#B10026; marker-width: 13;" +
+                    "[dbh<=200] { marker-fill:#E31A1C; marker-width: 11; } [dbh<=100] { marker-fill:#FC4E2A; marker-width: 9; }" + 
+                    "[dbh<=80] { marker-fill:#FD8D3C; marker-width: 7; } [dbh<=50] { marker-fill:#FEB24C; marker-width: 5; }" +
+                    "[dbh<=30] { marker-fill:#FED976; marker-width: 3; } [dbh<=20] { marker-fill:#FFFFB2; marker-width: 2; }" +
+                    "[dbh<1] { marker-fill: transparent; marker-width: 1; } }",
                 interactivity: "cartodb_id",
-                featureClick: function(ev, latlng, pos, data) { },
+                featureClick: function(ev, latlng, pos, data) {alert(data)},
                 featureOver: function(){},
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
             });
+            //map.addLayer(trees); 
 
             //diversityByBlock chloropleth
             var diversity = new L.CartoDBLayer({
@@ -135,22 +141,6 @@ $(document).ready(UTIL.loadEvents);
             //map.addLayer(treeHeight);
 
 //TREE HEIGHT FOR SINGLE SPECIES FILTER #TODO
-            //var desired_species = 'PLAC';
-            //var example_species = new L.CartoDBLayer({
-            //map: map,
-            //user_name: user_name,
-            //table_name: "alltrees_master",
-            //query: "SELECT * FROM {{table_name}} where species2 = '" + desired_species +"'",
-            //tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:1; line-opacity:1; marker-width: 2; marker-fill:#B10026; marker-width: 13; [dbh<=200] { marker-fill:#E31A1C; marker-width: 11; } [dbh<=100] { marker-fill:#FC4E2A; marker-width: 9; } [dbh<=80] { marker-fill:#FD8D3C; marker-width: 7; } [dbh<=50] { marker-fill:#FEB24C; marker-width: 5; } [dbh<=30] { marker-fill:#FED976; marker-width: 3; } [dbh<=20] { marker-fill:#FFFFB2; marker-width: 2; } [dbh<1] { marker-fill: transparent; marker-width: 1; } }",
-            //interactivity: "cartodb_id",
-            //featureClick: function(ev, latlng, pos, data) {alert(data)},
-            //featureOver: function(){},
-            //featureOut: function(){},
-            //attribution: "CartoDB",
-            //auto_bound: false
-            //});
-            //map.addLayer(example_species); 
-
 
 
 // SPECIES FILTERS 
@@ -213,6 +203,7 @@ $(document).ready(UTIL.loadEvents);
 
             // COMMUNITY FILTER 
             var commNameModifier = false
+
             function updateCommunityFilter() {
                 var commSelector = $("#communityList");
                 var communities = new Array();

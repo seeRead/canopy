@@ -6,8 +6,11 @@
     background: black;
     margin-bottom: 10px;
 }
+.note{
+    color:#777;
+}
 #selectors{
-    margin-top:5px;
+    margin:0px;
 }
 .nav li {
     cursor: pointer;

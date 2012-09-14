@@ -158,6 +158,7 @@ $(document).ready(UTIL.loadEvents);
 
                 // SPECIES DETAIL INFO
                 $("#species_image").html('');
+                $("#species_note").text('').removeClass('scroll');
 
                 if (species.length > 0){
 
@@ -183,14 +184,13 @@ $(document).ready(UTIL.loadEvents);
                           if (p.get('description') != ''){
                               $("#species_note").text(p.get('description'));
                           } else if (p.get('distribution') != ''){
-                              $("#species_note").text(p.get('distribution'));
+                              $("#species_note").text(p.get('distribution')).addClass('scroll');
                           } if (p.get('habitat') != ''){
-                              $("#species_note").text(p.get('habitat'));
+                              $("#species_note").text(p.get('habitat')).addClass('scroll');
                           }
                           // var newOption = $("<option>");
                           // newOption.text(p.get('common_name') + "    (" + p.get('total') + ")");
                           // newOption.attr('value',p.get('species_code'));
-                          console.log()
                         });
                     });
                 }

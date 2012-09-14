@@ -48,50 +48,53 @@
                 <!--<p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>-->
             <!--</div>-->
             <div class="row">
-                <div id="map" class="span9"></div>
+                <div class="span9">
+                    <div id="map"></div>
+                    <div id="submap">
+                        <p><strong>Layers : </strong>
+                            <button id="diversity" class="btn filter active">Diversity by Census Block (chloropleth)</button>
+                            <button id="commonFamilies" class="btn filter">Common Tree Families</button>
+                            <button id="treeHeight" class="btn filter">Tree Height by Census Block</button>
+                        </p>
+                    </div>
+                </div>
                 <div class="span3">
-                  <p><a id="locate" class="btn">Geolocate</a></p>
-                  <hr/>
-                    <form id="selectors">
-                        <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
-                        </select>
-                        <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
-                            <option value="Brooklyn">Brooklyn</option>
-                            <option value="Manhattan">Manhattan</option>
-                            <option value="Bronx">Bronx</option>
-                            <option value="Queens">Queens</option>
-                            <option value="Staten Island">Staten Island</option>
-                        </select>
-                        <select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
-                        </select>
-                    </form>
+                    <p><a id="locate" class="btn">Geolocate</a></p>
+                    <hr/>
+                      <form id="selectors">
+                          <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
+                          </select>
+                          <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
+                              <option value="Brooklyn">Brooklyn</option>
+                              <option value="Manhattan">Manhattan</option>
+                              <option value="Bronx">Bronx</option>
+                              <option value="Queens">Queens</option>
+                              <option value="Staten Island">Staten Island</option>
+                          </select>
+                          <select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
+                          </select>
+                      </form>
                     <p class="note"><small>Diameter represents tree height</small></p>
-                  <p id="species_image"></p>
-                  <p id="species_note"></p>
+                    <p id="species_image"></p>
+                    <p id="species_note"></p>
                 </div>
             </div>
 
-            <div class="submap row">
+            <div class="row">
                 <div class="span12">
-                  <p><strong>Layers : </strong>
-                  <button id="diversity" class="btn filter active">Diversity by Census Block (chloropleth)</button>
-                  <button id="commonFamilies" class="btn filter">Common Tree Families</button>
-                  <button id="treeHeight" class="btn filter">Tree Height by Census Block</button>
-                  </p>
-                </div>
-            </div>
-
-            <hr>
-            <div id="about">
-              <h2>About</h2>
-              <p>You can view the location of street trees throughout New York City via the filters on the right sidebar while the buttons along the bottom load different layers.</p>
-              <p>The views are generated from data provided by the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks Department</a>.</p>
-              <p>The data was cleaned, munged, analyzed and presented by our team at a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 at <a href="http://www.sva.edu/" target="_blank">SVA</a>.</p>
-              <p>Species info from <a href="http://eol.org/" target="_blank">Encyclopedia of Life</a>.<p>
-              <p><a href="./humans.txt">Credits</a></p>
-              <hr/>
-              <p><a href="http://www.nycgovparks.org/services/forestry/request" target="_blank">Make a street tree request</a></p>
-              <p><a href="https://github.com/seeread/canopy" target="_blank">Check out the repos</a></p>
+                    <hr>
+                    <div id="about">
+                        <h2>About</h2>
+                        <p>You can view the location of street trees throughout New York City via the filters on the right sidebar while the buttons along the bottom load different layers.</p>
+                        <p>The views are generated from data provided by the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks Department</a>.</p>
+                        <p>The data was cleaned, munged, analyzed and presented by our team at a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 at <a href="http://www.sva.edu/" target="_blank">SVA</a>.</p>
+                        <p>Species info from <a href="http://eol.org/" target="_blank">Encyclopedia of Life</a>.<p>
+                        <p><a href="./humans.txt">Credits</a></p>
+                        <hr/>
+                        <p><a href="http://www.nycgovparks.org/services/forestry/request" target="_blank">Make a street tree request</a></p>
+                        <p><a href="https://github.com/seeread/canopy" target="_blank">Check out the repos</a></p>
+                    </div>
+              </div>
             </div>
 
             <footer>

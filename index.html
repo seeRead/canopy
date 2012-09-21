@@ -52,7 +52,7 @@
                     <div id="map"></div>
                     <div id="submap">
                         <p><strong>Layers : </strong>
-                            <button id="diversity" class="btn filter active">Diversity by Census Block (chloropleth)</button>
+                            <button id="diversity" class="btn filter active">Diversity by Census Block (choropleth)</button>
                             <button id="commonFamilies" class="btn filter">Common Tree Families</button>
                             <button id="treeHeight" class="btn filter">Tree Height by Census Block</button>
                         </p>
@@ -80,20 +80,25 @@
                 </div>
             </div>
 
+            <hr>
             <div class="row">
-                <div class="span12">
-                    <hr>
-                    <div id="about">
-                        <h2>About</h2>
-                        <p>You can view the location of street trees throughout New York City via the filters on the right sidebar while the buttons along the bottom load different layers.</p>
-                        <p>The views are generated from data provided by the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks Department</a>.</p>
-                        <p>The data was cleaned, munged, analyzed and presented by our team at a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 at <a href="http://www.sva.edu/" target="_blank">SVA</a>.</p>
-                        <p>Species info from <a href="http://eol.org/" target="_blank">Encyclopedia of Life</a>.<p>
-                        <p><a href="./humans.txt">Credits</a></p>
-                        <hr/>
-                        <p><a href="http://www.nycgovparks.org/services/forestry/request" target="_blank">Make a street tree request</a></p>
-                        <p><a href="https://github.com/seeread/canopy" target="_blank">Check out the repos</a></p>
-                    </div>
+              <div id="howto" class="span3">
+                  <h3>How To</h3>
+                    <p>You can view the location of street trees throughout New York City via the filters on the right sidebar.</p>
+                    <p>Clicking the buttons along the bottom of the map will toggle layers too.</p>
+              </div>
+              <div id="credits" class="span3">
+                  <h3>About</h3>
+                  <p>The views are generated from data provided by the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks Department</a>.</p>
+                  <p>The data was cleaned, munged, analyzed and presented by our team at a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 at <a href="http://www.sva.edu/" target="_blank">SVA</a>.</p>
+                  <p>Species info has been loaded from <a href="http://eol.org/" target="_blank">Encyclopedia of Life</a>.<p>
+                  <p><a href="./humans.txt">These</a> are some of the people who worked on this.</p>
+              </div>
+              <div id="actions" class="span3">
+                <h3>Also</h3>
+                <h4><a href="https://github.com/seeread/canopy" target="_blank">Check out the repos</a></h4>
+                <h4><a href="mailto:mail@seeread.info">Send some feedback</a></h4>
+                <h4><a href="http://www.nycgovparks.org/services/forestry/request" target="_blank">Make a street tree request</a></h4>
               </div>
             </div>
 

@@ -42,6 +42,34 @@ $(document).ready(UTIL.loadEvents);
             $.ajaxSetup ({
                 //cache: false
             });
+//REPO INFO
+            var $li = $('#repo-info'),
+                url = "http://github.com/seeread/canopy",
+                segments = url.split('/'),
+                repo = segments.pop(),
+                username = segments.pop();
+
+            $.ajax({
+                url: "https://api.github.com/repos/"+username+"/"+repo,
+                dataType: 'jsonp',
+                success: function(response){
+                    if (response.meta.status == 200){
+                        var repo_data = response.data;
+                        if(repo_data) {
+                            //var watchers_link = $('<a>').addClass('watchers').attr('href', url+'/watchers').text(repo_data.watchers);
+                            //var forks_link = $('<a>').addClass('forks').attr('href', url+'/network').text(repo_data.forks);
+
+                            //$div.prepend(watchers_link);
+                            //$div.prepend(forks_link);
+                            var updated_at = $('<a class="repo-updated" href="'+url+'" target="_blank">'+
+                                '<small>Updated <time class="timeago" datetime="'+repo_data.updated_at+'"></time></small></a>');
+
+                            updated_at.find('.timeago').timeago();
+                            $li.prepend(updated_at);
+                        }
+                    }
+                }
+            });
 //MAP
             var user_name = "parks-datadive";
 
@@ -52,6 +80,7 @@ $(document).ready(UTIL.loadEvents);
             var zoom = 11;
 
             // is our Leaflet map object
+            //TODO brighter background map!
             var map = new L.Map('map').setView(position, zoom),
                 tileUrl = 'http://{s}.tiles.mapbox.com/v3/cartodb.map-u6vat89l/{z}/{x}/{y}.png',
                 basemap = new L.TileLayer(tileUrl, {attribution: "Stamen"});
@@ -154,9 +183,46 @@ $(document).ready(UTIL.loadEvents);
                 interactivity: "dbh, species2",
                 featureClick: function(ev, latlng, pos, data) {
                     //TODO species summary and link
-                    //$('#myModal').modal();
-                    //console.log(latlng);
-                    //console.log(data);
+                    //TODO determine side of street?
+                    var _lat        = latlng.lat.toString().substring(0, 7),
+                        _lng        = latlng.lng.toString().substring(0, 7),
+                        _width      = 166,
+                        _height     = 166,
+                        _fov        = 120, //field of view
+                        _url        = 'http://maps.googleapis.com/maps/api/streetview?size='+_width+
+                            'x'+_height+'&location='+_lat+','+_lng+'&sensor=false' +
+                            '&fov='+_fov,
+                        _$template  = $('#myModal'),
+                        _$modal     = _$template.clone().attr('id', 'thisModal'),
+                        _$body      = _$modal.find('.modal-body'),
+                        _link       = "https://maps.google.com/maps?q=&layer=c&cbll="+_lat+","+_lng+"&cbp=12";
+
+                    _$modal.prependTo('body');
+
+                    _$modal.on('hidden', function () {
+                        _$modal.remove();
+                    });
+
+                    //TODO work in alternate views
+                    var headings = ["0", "120", "240"];
+                    $.each(headings, function(i, heading){
+                        $('<a target="_blank" href="'+_link+'">'+
+                            '<img src="'+_url+'&heading='+heading+'" width="'+_width+'" height="'+_height+'"/>'+
+                            '</a>' )
+                            .prependTo(_$body);
+                    });
+                    //$('<a target="_blank" href="'+_link+'">'+'<img src="'+_url+'" width="'+_width+'" height="'+_height+'"/>'+
+                        //'</a>' ).prependTo(_$body);
+
+                    var thisSpeciesModel = speciesNames.find(function(p){ return p.get("species_code")==data.species2 });
+
+                    console.log(thisSpeciesModel);
+                    _$modal.find('.modal-label')
+                        .html('<a href="'+_link+'" target="_blank">'+
+                            thisSpeciesModel.get('common_name')+'</a> <small>| '+data.dbh+'\" '+
+                            '<a href="http://en.wikipedia.org/wiki/Diameter_at_breast_height" target="_blank">dbh</a></small>');
+
+                    _$modal.modal('show');
                 },
                 featureOver: function() {
                     //TODO tooltip with dbh, species
@@ -311,6 +377,7 @@ $(document).ready(UTIL.loadEvents);
             function updateQuery(){
                 var hasModifiers = false;
                 var all_modifiers = [speciesNameModifier, commNameModifier, boroNameModifier];
+                console.log(all_modifiers);
 
                 $.each(all_modifiers, function(i,v){
                     if(v !==false){
@@ -382,7 +449,6 @@ $(document).ready(UTIL.loadEvents);
                     newOption.attr('value',speciesCode);
 
                     $('#speciesList').append(newOption);
-
                 });
 
                 //chosen for select box

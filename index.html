@@ -28,6 +28,8 @@
                     <a class="brand" href="#">Canopy</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
+                          <li id="repo-info">
+                          </li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
@@ -75,7 +77,8 @@
                 <div id="howto" class="span4">
                     <h3>How to use</h3>
                     <p>You can view the location of street trees throughout New York City via the filters on the right sidebar.</p>
-                    <p>Clicking the buttons along the bottom of the map will toggle layers too.</p>
+                    <p>If you click on a tree, you view see what it looks like on the street and see the estimated diameter at breast height.</p>
+                    <p>The buttons along the bottom of the map toggle other layers.</p>
                 </div>
                 <div id="credits" class="span4">
                     <h3>About</h3>
@@ -96,11 +99,9 @@
             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="myModal">
                 <div class="modal-header">
                     <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                    <h3 id="myModalLabel">Tree name</h3>
+                    <h3 class="modal-label"></h3>
                 </div>
                 <div class="modal-body">
-                    <h4>Location</h4>
-                    <p>Stats</p>
                 </div>
                 <div class="modal-footer">
                     <button data-dismiss="modal" class="btn">Close</button>

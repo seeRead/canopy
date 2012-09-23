@@ -1,3 +1,5 @@
+//TODO cleaner backbone implementation?
+//
 //* DOM Based Routing
 //* http://paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/
 ;
@@ -86,16 +88,16 @@ $(document).ready(UTIL.loadEvents);
                 table_name: "alltrees_master",
                 query: "SELECT * FROM {{table_name}}",
                 tile_style: treeTileStyle +treeTileStyleEnd,
-                interactivity: "cartodb_id",
+                interactivity: "dbh, species2",
                 featureClick: function(ev, latlng, pos, data) {
-					//TODO
+                    //TODO species summary and link
                     //$('#myModal').modal();
+                    //console.log(latlng);
                     //console.log(data);
                 },
                 featureOver: function() {
-					//TODO
-					//ToolTip
-				},
+                    //TODO tooltip with dbh, species
+                },
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
@@ -114,9 +116,14 @@ $(document).ready(UTIL.loadEvents);
                     "[total<=15] { polygon-fill:#FC4E2A; polygon-opacity:0.5;  } [total<=10] { polygon-fill:#FD8D3C } "+
                     "[total<=8] { polygon-fill:#FEB24C; polygon-opacity:0.4;  } [total<=5] { polygon-fill:#FED976 } "+
                     "[total<=2] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
-                interactivity: "cartodb_id",
-                featureClick: function(ev, latlng, pos, data) {},
-                featureOver: function(){},
+                interactivity: "total",
+                featureClick: function(ev, latlng, pos, data) {
+                    //TODO modal with block summary ( trees, height, diversity and google view?)
+                },
+                featureOver: function(ev, latlng, pos, data) {
+                    //TODO tooltip with count
+                    //console.log(data);
+                },
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
@@ -136,9 +143,13 @@ $(document).ready(UTIL.loadEvents);
                     "[family='OAK']{marker-fill:#BEAED4 } [family='MAPLE']{marker-fill:#FDC086 } "+
                     "[family='PINE']{marker-fill:#FFFF99 } [family='ELM']{marker-fill:#386CB0 } "+
                     "[family='ASH']{marker-fill:#F0027F } [family='CHERRY']{marker-fill:#BF5B17} [zoom>12]{marker-width:3;}}",
-                interactivity: "cartodb_id",
-                featureClick: function(ev, latlng, pos, data) { },
-                featureOver: function(){},
+                interactivity: "lk_species.popular_family",
+                featureClick: function(ev, latlng, pos, data) {
+                    //TODO should be same as tree layer
+                },
+                featureOver: function(){
+                    //TODO same
+                },
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
@@ -151,9 +162,14 @@ $(document).ready(UTIL.loadEvents);
                 table_name: "alltrees_master",
                 query: "SELECT nycb2010.the_geom_webmercator, count(*) as total FROM nycb2010, alltrees_master WHERE st_intersects(nycb2010.the_geom_webmercator,alltrees_master.the_geom_webmercator) GROUP BY nycb2010.the_geom_webmercator",
                 tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:1; line-opacity:1; polygon-opacity:1; } [total<=297] { polygon-fill:#B10026 } [total<=150] { polygon-fill:#E31A1C } [total<=750] { polygon-fill:#FC4E2A } [total<=40] { polygon-fill:#FD8D3C } [total<=20] { polygon-fill:#FEB24C } [total<=10] { polygon-fill:#FED976 } [total<=5] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
-                interactivity: "cartodb_id",
-                featureClick: function(ev, latlng, pos, data) {},
-                featureOver: function(){},
+                interactivity: "total",
+                featureClick: function(ev, latlng, pos, data) {
+                    //TODO modal with block summary ( trees, height, diversity and google view?)
+                },
+                featureOver: function(ev, latlng, pos, data) {
+                    //TODO tooltip with height
+                    //console.log(data);
+                },
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
@@ -171,18 +187,18 @@ $(document).ready(UTIL.loadEvents);
 
             function generateTileColors(speciesCodes){
                 // Kelly colors and Boynton
-				// http://jsfiddle.net/k8NC2/1/
-				// TODO avoid some of these or automate with background bias?
+                // http://jsfiddle.net/k8NC2/1/
+                // TODO avoid some of these or automate with background bias?
                 var colors = [ "#A6BDD7", "#CEA262", "#007D34","#803E75",
-					 "#00FF00", "#FF00FF", "#800000","#817066", "#0000FF"
-				];
+                     "#00FF00", "#FF00FF", "#800000","#817066", "#0000FF"
+                ];
 
                 $.each(speciesCodes, function(i,v){
-					if(colors[i].length > 0){
-						speciesTileStyle += " [species2='"+ v +"'] {marker-fill:"+colors[i] +"}";
-					}
+                    if(colors[i].length > 0){
+                        speciesTileStyle += " [species2='"+ v +"'] {marker-fill:"+colors[i] +"}";
+                    }
                 });
-				//TODO store species to color mapping and add to side
+                //TODO store species to color mapping and add to side
             }
 
             function updateSpeciesFilter() {
@@ -200,6 +216,9 @@ $(document).ready(UTIL.loadEvents);
 
                 generateTileColors(species);
 
+                // TODO abstract info area for more general summaries
+                // add neighborhood and borough summaries (per species too?)
+                //
                 // SPECIES DETAIL INFO
                 $("#species_name").html('');
                 $("#species_image").html('');
@@ -211,37 +230,35 @@ $(document).ready(UTIL.loadEvents);
 
                     var speciesInfoModel = CartoDB.CartoDBCollection.extend({
                         table:'species_info',
-                        //sql: "select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"'",
-                        sql: "select * from species_info where species_code = '"+species[0]+"'",
+                        sql: "select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"'",
+                        //sql: "select * from species_info where species_code = '"+species[0]+"'",
                     });
 
                     var speciesInfos = new speciesInfoModel();
                     speciesInfos.fetch();
-					console.log(speciesInfos);
+                    //console.log(speciesInfos);
                     speciesInfos.bind('reset', function() {
-                         speciesInfos.each(function(p) {
-                              if (p.get('image') != ''){
-                                  var img = new Image();
-                                  img.src = p.get('image');
-                                  img.width = 220;
-                                  img.onload = function(){
-                                      $("#species_image").append(img);
-                                  }
-                              }
+                        speciesInfos.each(function(p) {
+                            if (p.get('image') != ''){
+                                var img = new Image();
 
-                              if (p.get('description') != ''){
-                                  $("#species_note").text(p.get('description'));
-                              } else if (p.get('distribution') != ''){
-                                  $("#species_note").text(p.get('distribution')).addClass('scroll');
-                              }
+                                img.src = p.get('image');
+                                img.width = 220;
+                                img.onload = function(){
+                                    $("#species_image").append(img);
+                                }
+                            }
 
-                              if (p.get('habitat') != ''){
-                                  $("#species_note").text(p.get('habitat')).addClass('scroll');
-                              }
+                            if (p.get('description') != ''){
+                                $("#species_note").text(p.get('description'));
+                            } else if (p.get('distribution') != ''){
+                                $("#species_note").text(p.get('distribution')).addClass('scroll');
+                            }
 
-                              // var newOption = $("<option>");
-                              // newOption.text(p.get('common_name') + "    (" + p.get('total') + ")");
-                              // newOption.attr('value',p.get('species_code'));
+                            if (p.get('habitat') != ''){
+                                $("#species_note").text(p.get('habitat')).addClass('scroll');
+                            }
+
                         });
                     });
                 }
@@ -341,7 +358,17 @@ $(document).ready(UTIL.loadEvents);
                 user: user_name // you should put your account name here
             });
 
-            // Species
+
+            // FOR COLUMN INFO
+            //var speciesModel = CartoDB.CartoDBCollection.extend({
+                //sql: "select * from alltrees_master limit 10", //public table
+            //});
+
+            //var speciesData = new speciesModel();
+            //speciesData.fetch();
+            //console.log(speciesData);
+
+            // species_name,_codes, and totals
             var speciesNamesModel = CartoDB.CartoDBCollection.extend({
                 sql: "select common_name, species_code, total from species_name_codes where common_name != '' and total>0 order by total desc", //public table
             });
@@ -349,14 +376,6 @@ $(document).ready(UTIL.loadEvents);
             var speciesNames = new speciesNamesModel();
 
             speciesNames.fetch();
-
-            // gets column names
-            //var speciesModel = CartoDB.CartoDBCollection.extend({
-                //sql: "select * from alltrees_master limit 10", //public table
-            //});
-
-            //var speciesData = new speciesNamesModel();
-            //speciesData.fetch();
 
             speciesNames.bind('reset', function() {
 
@@ -416,14 +435,15 @@ $(document).ready(UTIL.loadEvents);
 //GEOLOCATE
             $('#locate').click(function(){
                 getLocation();
+                //TODO nearby summary?
             });
 
             function getLocation() {
               if (Modernizr.geolocation) {
-                navigator.geolocation.getCurrentPosition(show_map);
+                navigator.geolocation.getCurrentPosition(showMap);
               } else {
                   //NO geo
-				  $('#locate').after("<p>Not able to geolocate.</p>");
+                  $('#locate').after("<p>Not able to geolocate.</p>");
               }
             }
 

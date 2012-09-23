@@ -24,7 +24,7 @@ Check the humans.txt for credits.  Thanks!
 - more info about trees (origin etc.)
 - cultivar level info
 
-## Species Characteristics to be explored
+## Species characteristics to be explored
 - hardiness
 - spring blooms
 - fall color
@@ -32,11 +32,13 @@ Check the humans.txt for credits.  Thanks!
 - growth rate
 - growth habit
 
-## Priority Areas
+## Priority areas for planting
 - increasing human population
+- low tree diversity
+- low tree count
 
-## Planting Site Factors
+## Planting site factors
 - higher sidewalk width
 - less overhead lines
 - more long green strips
-- more existing trees (as indicator of health)
+- more existing trees in immediate area (as indicator of health)

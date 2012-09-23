@@ -195,13 +195,12 @@ $(document).ready(UTIL.loadEvents);
                         _$template  = $('#myModal'),
                         _$modal     = _$template.clone().attr('id', 'thisModal'),
                         _$body      = _$modal.find('.modal-body'),
-                        _link       = "https://maps.google.com/maps?q=&layer=c&cbll="+_lat+","+_lng+"&cbp=12";
+                        _link       = "https://maps.google.com/maps?q=&layer=c&cbll="+_lat+","+_lng+"&cbp=12",
+                        _thisSpeciesModel = speciesNames.find(function(p){ return p.get("species_code")==data.species2 }),
+                        _common_name = _thisSpeciesModel.get('common_name'),
+                        _common_name_encoded = encodeURIComponent(_common_name);
 
-                    _$modal.prependTo('body');
-
-                    _$modal.on('hidden', function () {
-                        _$modal.remove();
-                    });
+                    //console.log(_thisSpeciesModel);
 
                     //TODO work in alternate views
                     var headings = ["0", "120", "240"];
@@ -214,13 +213,21 @@ $(document).ready(UTIL.loadEvents);
                     //$('<a target="_blank" href="'+_link+'">'+'<img src="'+_url+'" width="'+_width+'" height="'+_height+'"/>'+
                         //'</a>' ).prependTo(_$body);
 
-                    var thisSpeciesModel = speciesNames.find(function(p){ return p.get("species_code")==data.species2 });
-
-                    console.log(thisSpeciesModel);
                     _$modal.find('.modal-label')
                         .html('<a href="'+_link+'" target="_blank">'+
-                            thisSpeciesModel.get('common_name')+'</a> <small>| '+data.dbh+'\" '+
-                            '<a href="http://en.wikipedia.org/wiki/Diameter_at_breast_height" target="_blank">dbh</a></small>');
+                            _common_name+'</a> <small>| '+data.dbh+'\" '+
+                            '<a href="http://en.wikipedia.org/wiki/Diameter_at_breast_height" target="_blank"> dbh</a></small>');
+
+                    _$body.append('<hr/><ul><li><a href="http://en.wikipedia.org/w/index.php?search='+
+                            _common_name_encoded+'&go=Go" target="_blank">Wikipedia</a></li>'+
+                            '<li><a href="http://eol.org/search/?q='+_common_name_encoded+
+                            '&search=Go" target="_blank">Encyclopedia of Life</a></li>');
+
+                    _$modal.prependTo('body');
+
+                    _$modal.on('hidden', function () {
+                        _$modal.remove();
+                    });
 
                     _$modal.modal('show');
                 },
@@ -415,7 +422,9 @@ $(document).ready(UTIL.loadEvents);
 
             }
 
-// LOAD AND BIND MODEL DATA FOR MENU
+// MENU
+            $("#boroList").chosen({no_results_text: "No results matched"}); // jQuery version
+
             var CartoDB = Backbone.CartoDB({
                 user: user_name // you should put your account name here
             });
@@ -450,9 +459,10 @@ $(document).ready(UTIL.loadEvents);
 
                     $('#speciesList').append(newOption);
                 });
-
-                //chosen for select box
                 $("#speciesList").chosen({no_results_text: "No results matched"}); // jQuery version
+
+                //SHOW filters
+                $('#filters').removeClass('hidden');
             });
 
             // Neighborhood
@@ -473,12 +483,8 @@ $(document).ready(UTIL.loadEvents);
                     $('#communityList').append(newOption)
                 });
 
-                //chosen for select box
                 $("#communityList").chosen({no_results_text: "No results matched"}); // jQuery version
             });
-
-            // Neighborhoods
-            $("#boroList").chosen({no_results_text: "No results matched"}); // jQuery version
 
 //TOGGLE LAYER
             $('.filter').click(function(){

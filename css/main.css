@@ -30,9 +30,9 @@ body {
     cursor: pointer;
 }
 
-#species_image img{
-    width: 220px;
-    height: auto;
+#species_image {
+    overflow-y:hidden;
+    height:220px;
 }
 #species_note {
     width: 220px;

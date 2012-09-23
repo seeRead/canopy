@@ -4,6 +4,9 @@
 .navbar-inverse .brand:hover, .navbar-inverse .nav > li > a:hover {
     color:#999;
 }
+.navbar .nav li iframe{
+    padding: 10px 15px;
+}
 .btn.active, .btn:active {
     background-color: #808080;
     color: #E6E6E6;
@@ -16,14 +19,14 @@ body {
     background-color: #F2F4F1;
 }
 #map{
-    height: 450px;
+    height: 475px;
     background: black;
     margin-bottom: 10px;
 }
 .note{
     color:#777;
 }
-#selectors{
+#filters{
     margin:0px;
 }
 .nav li {
@@ -32,7 +35,7 @@ body {
 
 #species_image {
     overflow-y:hidden;
-    height:220px;
+    max-height:220px;
 }
 #species_note {
     width: 220px;

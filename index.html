@@ -30,6 +30,10 @@
                         <ul class="nav">
                           <li id="repo-info">
                           </li>
+                          <li>
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://seeread.github.com/canopy" data-via="seereadnow">Tweet</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                          </li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
@@ -51,7 +55,7 @@
                 <div class="span3">
                     <p><a id="locate" class="btn">Geolocate</a></p>
                     <hr/>
-                    <form id="selectors">
+                    <form id="filters" class="hidden">
                         <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
                         </select>
                         <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
@@ -79,6 +83,7 @@
                     <p>You can view the location of street trees throughout New York City via the filters on the right sidebar.</p>
                     <p>If you click on a tree, you view see what it looks like on the street and see the estimated diameter at breast height.</p>
                     <p>The buttons along the bottom of the map toggle other layers.</p>
+                    <p><em>Repeated clicking of tree dots may cause you to run over your personal Street View quota. A correct API implementation is forthcoming.</em></p>
                 </div>
                 <div id="credits" class="span4">
                     <h3>About</h3>

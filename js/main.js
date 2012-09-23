@@ -74,36 +74,6 @@ $(document).ready(UTIL.loadEvents);
             // });
             // map.addLayer(neighborhood_outline);
 
-            var treeTileStyle = "#{{table_name}}"+
-                    "{ line-color:#FFFFFF; line-width:1; line-opacity:1; marker-width: 2; marker-fill:#fff; marker-width: 13; " +
-                    "[dbh<=200] { marker-width: 11; } [dbh<=100] { marker-width: 9; } " +
-                    "[dbh<=80] { marker-width: 7; } [dbh<=50] { marker-width: 5; } " +
-                    "[dbh<=30] { marker-width: 3; } [dbh<=20] { marker-width: 2; } " +
-                    "[dbh<1] { marker-fill: transparent; marker-width: 1; }";
-            var treeTileStyleEnd = " }";
-
-            var trees = new L.CartoDBLayer({
-                map: map,
-                user_name: user_name,
-                table_name: "alltrees_master",
-                query: "SELECT * FROM {{table_name}}",
-                tile_style: treeTileStyle +treeTileStyleEnd,
-                interactivity: "dbh, species2",
-                featureClick: function(ev, latlng, pos, data) {
-                    //TODO species summary and link
-                    //$('#myModal').modal();
-                    //console.log(latlng);
-                    //console.log(data);
-                },
-                featureOver: function() {
-                    //TODO tooltip with dbh, species
-                },
-                featureOut: function(){},
-                attribution: "CartoDB",
-                auto_bound: false
-            });
-            //map.addLayer(trees);
-
             //diversityByBlock choropleth
             var diversity = new L.CartoDBLayer({
                 map: map,
@@ -154,7 +124,6 @@ $(document).ready(UTIL.loadEvents);
                 attribution: "CartoDB",
                 auto_bound: false
             });
-            //map.addLayer(commonFamilies);
 
             var treeHeight = new L.CartoDBLayer({
                 map: map,
@@ -174,16 +143,36 @@ $(document).ready(UTIL.loadEvents);
                 attribution: "CartoDB",
                 auto_bound: false
             });
-            //map.addLayer(treeHeight);
-
-// FILTERS
-            var commNameModifier    = false,
-                speciesNameModifier = false,
-                boroNameModifier    = false;
 
 
+            var trees = new L.CartoDBLayer({
+                map: map,
+                user_name: user_name,
+                table_name: "alltrees_master",
+                query: "SELECT * FROM {{table_name}}",
+                tile_style: treeTileStyle +treeTileStyleEnd,
+                interactivity: "dbh, species2",
+                featureClick: function(ev, latlng, pos, data) {
+                    //TODO species summary and link
+                    //$('#myModal').modal();
+                    //console.log(latlng);
+                    //console.log(data);
+                },
+                featureOver: function() {
+                    //TODO tooltip with dbh, species
+                },
+                featureOut: function(){},
+                attribution: "CartoDB",
+                auto_bound: false
+            });
 
-            var speciesTileStyle = '';
+            var treeTileStyle = "#{{table_name}}"+
+                    "{ line-color:#FFFFFF; line-width:1; line-opacity:1; marker-width: 2; marker-fill:#fff; marker-width: 13; " +
+                    "[dbh<=200] { marker-width: 11; } [dbh<=100] { marker-width: 9; } " +
+                    "[dbh<=80] { marker-width: 7; } [dbh<=50] { marker-width: 5; } " +
+                    "[dbh<=30] { marker-width: 3; } [dbh<=20] { marker-width: 2; } " +
+                    "[dbh<1] { marker-fill: transparent; marker-width: 1; }";
+            var treeTileStyleEnd = " }";
 
             function generateTileColors(speciesCodes){
                 // Kelly colors and Boynton
@@ -200,6 +189,13 @@ $(document).ready(UTIL.loadEvents);
                 });
                 //TODO store species to color mapping and add to side
             }
+
+// TREE FILTERS
+            var speciesNameModifier = false,
+                commNameModifier = false,
+                boroNameModifier = false;
+
+            var speciesTileStyle = '';
 
             function updateSpeciesFilter() {
                 var speciesSelector = $("#speciesList"),
@@ -225,16 +221,17 @@ $(document).ready(UTIL.loadEvents);
                 $("#species_note").text('').removeClass('scroll');
 
                 if (species.length > 0){
-
                     speciesNameModifier = " species2 in ('"+species.join("','")+"') ";
 
                     var speciesInfoModel = CartoDB.CartoDBCollection.extend({
                         table:'species_info',
-                        sql: "select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"'",
-                        //sql: "select * from species_info where species_code = '"+species[0]+"'",
+                        sql: "select associations description, distribution, habitat, image, morphology,"+
+                            "species_code from species_info where species_code = '"+species[0]+"'"
+                        //sql: "select * from species_info where species_code = '"+species[0]+"'"
                     });
 
                     var speciesInfos = new speciesInfoModel();
+
                     speciesInfos.fetch();
                     //console.log(speciesInfos);
                     speciesInfos.bind('reset', function() {
@@ -266,10 +263,6 @@ $(document).ready(UTIL.loadEvents);
                 updateQuery();
             }
 
-            $("#speciesList").change(function(e){
-                updateSpeciesFilter();
-            });
-
             function updateCommunityFilter() {
                 var commSelector = $("#communityList"),
                     communities = new Array();
@@ -286,10 +279,6 @@ $(document).ready(UTIL.loadEvents);
 
                 updateQuery();
             }
-
-            $("#communityList").change(function(e){
-                updateCommunityFilter();
-            });
 
             function updateBoroFilter() {
                 var boroSelector = $("#communityList"),
@@ -308,11 +297,17 @@ $(document).ready(UTIL.loadEvents);
                 updateQuery();
             }
 
+            $("#speciesList").change(function(e){
+                updateSpeciesFilter();
+            });
+            $("#communityList").change(function(e){
+                updateCommunityFilter();
+            });
             $("#boroList").change(function(e){
                 updateBoroFilter();
             });
 
-            // QUERY UPDATE
+// QUERY UPDATE
             function updateQuery(){
                 var hasModifiers = false;
                 var all_modifiers = [speciesNameModifier, commNameModifier, boroNameModifier];

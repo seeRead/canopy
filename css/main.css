@@ -6,6 +6,12 @@
     color: #E6E6E6;
     text-shadow: none;
 }
+hr {
+    margin:5px;
+}
+body {
+    background-color: #F2F4F1;
+}
 #map{
     height: 450px;
     background: black;

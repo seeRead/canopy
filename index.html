@@ -11,9 +11,9 @@
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-        <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.3.1/leaflet.css" />
         <link rel="stylesheet" href="http://vizzuality.github.com/cartodb-leaflet/css/cartodb-leaflet.css">
+        <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.6.1-respond-1.1.0.min.js"></script>
         <!--[if lt IE 7]>
@@ -28,7 +28,6 @@
                     <a class="brand" href="#">Canopy</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
-                            <li><a href="#about">About</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
@@ -36,18 +35,12 @@
         </div>
 
         <div class="container">
-            <!-- Main hero unit for a primary marketing message or call to action -->
-            <!--<div class="hero-unit">-->
-                <!--<h1>Hello, world!</h1>-->
-                <!--<p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>-->
-                <!--<p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>-->
-            <!--</div>-->
             <div class="row">
                 <div class="span9">
                     <div id="map"></div>
                     <div id="submap">
                         <p><strong>Layers : </strong>
-                            <button id="diversity" class="btn filter active">Diversity by Census Block (chloropleth)</button>
+                            <button id="diversity" class="btn filter active">Diversity by Census Block</button>
                             <button id="commonFamilies" class="btn filter">Common Tree Families</button>
                             <button id="treeHeight" class="btn filter">Tree Height by Census Block</button>
                         </p>
@@ -56,60 +49,67 @@
                 <div class="span3">
                     <p><a id="locate" class="btn">Geolocate</a></p>
                     <hr/>
-                      <form id="selectors">
-                          <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
-                          </select>
-                          <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
-                              <option value="Brooklyn">Brooklyn</option>
-                              <option value="Manhattan">Manhattan</option>
-                              <option value="Bronx">Bronx</option>
-                              <option value="Queens">Queens</option>
-                              <option value="Staten Island">Staten Island</option>
-                          </select>
-                          <select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
-                          </select>
-                      </form>
+										<form id="selectors">
+												<select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
+												</select>
+												<select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
+														<option value="Brooklyn">Brooklyn</option>
+														<option value="Manhattan">Manhattan</option>
+														<option value="Bronx">Bronx</option>
+														<option value="Queens">Queens</option>
+														<option value="Staten Island">Staten Island</option>
+												</select>
+												<select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
+												</select>
+										</form>
                     <p class="note"><small>Diameter represents tree height</small></p>
+										<hr/>
+                    <h2 id="species_name"></h2>
                     <p id="species_image"></p>
                     <p id="species_note"></p>
                 </div>
             </div>
 
+            <hr>
             <div class="row">
-                <div class="span12">
-                    <hr>
-                    <div id="about">
-                        <h2>About</h2>
-                        <p>You can view the location of street trees throughout New York City via the filters on the right sidebar while the buttons along the bottom load different layers.</p>
-                        <p>The views are generated from data provided by the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks Department</a>.</p>
-                        <p>The data was cleaned, munged, analyzed and presented by our team at a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 at <a href="http://www.sva.edu/" target="_blank">SVA</a>.</p>
-                        <p>Species info from <a href="http://eol.org/" target="_blank">Encyclopedia of Life</a>.<p>
-                        <p><a href="./humans.txt">Credits</a></p>
-                        <hr/>
-                        <p><a href="http://www.nycgovparks.org/services/forestry/request" target="_blank">Make a street tree request</a></p>
-                        <p><a href="https://github.com/seeread/canopy" target="_blank">Check out the repos</a></p>
-                    </div>
-              </div>
+								<div id="howto" class="span4">
+										<h3>How to use</h3>
+										<p>You can view the location of street trees throughout New York City via the filters on the right sidebar.</p>
+										<p>Clicking the buttons along the bottom of the map will toggle layers too.</p>
+								</div>
+								<div id="credits" class="span4">
+										<h3>About</h3>
+										<p>The views are generated from data provided by the <a href="http://www.nycgovparks.org/" target="_blank">NYC Parks Department</a>.</p>
+										<p>The data was cleaned, munged, analyzed and presented by our team at a <a href="http://datakind.org/" target="_blank">DataKind</a> event held in September 2012 at <a href="http://www.sva.edu/" target="_blank">SVA</a>.</p>
+										<p>Species info has been loaded from <a href="http://eol.org/" target="_blank">Encyclopedia of Life</a>.<p>
+										<p><a href="./humans.txt">These</a> are some of the people who worked on this.</p>
+								</div>
+								<div id="actions" class="span4">
+										<h3>Also</h3>
+										<h4><a href="https://github.com/seeread/canopy" target="_blank">Check out the repos</a></h4>
+										<h4><a href="mailto:mail@seeread.info">Send some feedback</a></h4>
+										<h4><a href="http://www.nycgovparks.org/services/forestry/request" target="_blank">Make a street tree request</a></h4>
+								</div>
             </div>
 
-    <!-- hidden -->
-					<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="myModal">
-							<div class="modal-header">
-									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-									<h3 id="myModalLabel">Tree name</h3>
-							</div>
-							<div class="modal-body">
-									<h4>Location</h4>
-									<p>Stats</p>
-							</div>
-							<div class="modal-footer">
-									<button data-dismiss="modal" class="btn">Close</button>
-							</div>
-          </div>
+						<!-- hidden -->
+						<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="myModal">
+								<div class="modal-header">
+										<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+										<h3 id="myModalLabel">Tree name</h3>
+								</div>
+								<div class="modal-body">
+										<h4>Location</h4>
+										<p>Stats</p>
+								</div>
+								<div class="modal-footer">
+										<button data-dismiss="modal" class="btn">Close</button>
+								</div>
+						</div>
 
 
-            <footer>
-            </footer>
+						<footer>
+						</footer>
 
         </div> <!-- /container -->
 

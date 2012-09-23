@@ -201,6 +201,7 @@ $(document).ready(UTIL.loadEvents);
                 generateTileColors(species);
 
                 // SPECIES DETAIL INFO
+                $("#species_name").html('');
                 $("#species_image").html('');
                 $("#species_note").text('').removeClass('scroll');
 
@@ -210,11 +211,13 @@ $(document).ready(UTIL.loadEvents);
 
                     var speciesInfoModel = CartoDB.CartoDBCollection.extend({
                         table:'species_info',
-                        sql: "select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"'",
+                        //sql: "select associations description, distribution, habitat, image, morphology, species_code from species_info where species_code = '"+species[0]+"'",
+                        sql: "select * from species_info where species_code = '"+species[0]+"'",
                     });
 
                     var speciesInfos = new speciesInfoModel();
                     speciesInfos.fetch();
+					console.log(speciesInfos);
                     speciesInfos.bind('reset', function() {
                          speciesInfos.each(function(p) {
                               if (p.get('image') != ''){

@@ -11,6 +11,7 @@ Check the humans.txt for credits.  Thanks!
 - https://github.com/abelsonlive/ParksDataDive2012
 
 ##TODO
+- touch-friendly modals
 - tooltips
 - dynamic color legend for species, values (via backbone)
 - cross filter numbers / species for other current filters

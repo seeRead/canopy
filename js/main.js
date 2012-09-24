@@ -1,4 +1,6 @@
 //TODO cleaner backbone implementation?
+//TODO touch to click binding
+//TODO http://documentcloud.github.com/visualsearch/
 //
 //* DOM Based Routing
 //* http://paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/
@@ -108,7 +110,9 @@ $(document).ready(UTIL.loadEvents);
                 map: map,
                 user_name: user_name,
                 table_name: "nycb2010",
-                query: "SELECT nycb2010.the_geom_webmercator, count( distinct alltrees_master.species2) as total FROM nycb2010, alltrees_master WHERE st_intersects(nycb2010.the_geom_webmercator,alltrees_master.the_geom_webmercator) GROUP BY nycb2010.the_geom_webmercator",
+                query: "SELECT nycb2010.the_geom_webmercator, count( distinct alltrees_master.species2)"+
+                    " as total FROM nycb2010, alltrees_master WHERE st_intersects(nycb2010.the_geom_webmercator,"+
+                    " alltrees_master.the_geom_webmercator) GROUP BY nycb2010.the_geom_webmercator",
                 tile_style: "#{{table_name}}" +
                     "{ line-color:#FFFFFF; line-width:0; line-opacity:0.7; polygon-opacity:0.6; polygon-fill: black; "+
                     "[total<=33] { polygon-fill:#B10026 } [total<=20] { polygon-fill:#E31A1C } "+
@@ -135,7 +139,9 @@ $(document).ready(UTIL.loadEvents);
                 map: map,
                 user_name: user_name,
                 table_name: "alltrees_master",
-                query: "SELECT {{table_name}}.the_geom_webmercator,lk_species.popular_family as family FROM {{table_name}}, lk_species where {{table_name}}.species2 = lk_species.code ORDER BY lk_species.popular_family DESC",
+                query: "SELECT {{table_name}}.the_geom_webmercator,lk_species.popular_family as family"+
+                    " FROM {{table_name}}, lk_species where {{table_name}}.species2 = lk_species.code"+
+                    " ORDER BY lk_species.popular_family DESC",
                 tile_style: "#{{table_name}}{ marker-fill:#bababa; marker-width:1; "+
                     "marker-line-color:white; marker-line-width:0.0; marker-opacity:0.6; "+
                     "marker-line-opacity:1; marker-placement:point; marker-type:ellipse; marker-allow-overlap:true; "+
@@ -158,8 +164,13 @@ $(document).ready(UTIL.loadEvents);
                 map: map,
                 user_name: user_name,
                 table_name: "alltrees_master",
-                query: "SELECT nycb2010.the_geom_webmercator, count(*) as total FROM nycb2010, alltrees_master WHERE st_intersects(nycb2010.the_geom_webmercator,alltrees_master.the_geom_webmercator) GROUP BY nycb2010.the_geom_webmercator",
-                tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:1; line-opacity:1; polygon-opacity:1; } [total<=297] { polygon-fill:#B10026 } [total<=150] { polygon-fill:#E31A1C } [total<=750] { polygon-fill:#FC4E2A } [total<=40] { polygon-fill:#FD8D3C } [total<=20] { polygon-fill:#FEB24C } [total<=10] { polygon-fill:#FED976 } [total<=5] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
+                query: "SELECT nycb2010.the_geom_webmercator, count(*) as total FROM nycb2010, alltrees_master "+
+                    "WHERE st_intersects(nycb2010.the_geom_webmercator,alltrees_master.the_geom_webmercator) "+
+                    "GROUP BY nycb2010.the_geom_webmercator",
+                tile_style: "#{{table_name}} { line-color:#FFFFFF; line-width:1; line-opacity:1; polygon-opacity:1; }"+
+                    " [total<=297] { polygon-fill:#B10026 } [total<=150] { polygon-fill:#E31A1C } [total<=750]"+
+                    "{ polygon-fill:#FC4E2A } [total<=40] { polygon-fill:#FD8D3C } [total<=20] { polygon-fill:#FEB24C } "+
+                    "[total<=10] { polygon-fill:#FED976 } [total<=5] { polygon-fill:#FFFFB2 } [total<1] { polygon-fill: transparent } }",
                 interactivity: "total",
                 featureClick: function(ev, latlng, pos, data) {
                     //TODO modal with block summary ( trees, height, diversity and google view?)
@@ -182,8 +193,7 @@ $(document).ready(UTIL.loadEvents);
                 tile_style: treeTileStyle +treeTileStyleEnd,
                 interactivity: "dbh, species2",
                 featureClick: function(ev, latlng, pos, data) {
-                    //TODO species summary and link
-                    //TODO determine side of street?
+                    // SHOW MODAL WITH GOOGLE STREET IMAGE, SPECIES DATA
                     var _lat        = latlng.lat.toString().substring(0, 7),
                         _lng        = latlng.lng.toString().substring(0, 7),
                         _width      = 166,
@@ -200,9 +210,6 @@ $(document).ready(UTIL.loadEvents);
                         _common_name = _thisSpeciesModel.get('common_name'),
                         _common_name_encoded = encodeURIComponent(_common_name);
 
-                    //console.log(_thisSpeciesModel);
-
-                    //TODO work in alternate views
                     var headings = ["0", "120", "240"];
                     $.each(headings, function(i, heading){
                         $('<a target="_blank" href="'+_link+'">'+
@@ -210,6 +217,7 @@ $(document).ready(UTIL.loadEvents);
                             '</a>' )
                             .prependTo(_$body);
                     });
+
                     //$('<a target="_blank" href="'+_link+'">'+'<img src="'+_url+'" width="'+_width+'" height="'+_height+'"/>'+
                         //'</a>' ).prependTo(_$body);
 
@@ -247,66 +255,99 @@ $(document).ready(UTIL.loadEvents);
                     "[dbh<1] { marker-fill: transparent; marker-width: 1; }";
             var treeTileStyleEnd = " }";
 
-            function generateTileColors(speciesCodes){
-                // Kelly colors and Boynton
-                // http://jsfiddle.net/k8NC2/1/
-                // TODO avoid some of these or automate with background bias?
-                var colors = [ "#A6BDD7", "#CEA262", "#007D34","#803E75",
-                     "#00FF00", "#FF00FF", "#800000","#817066", "#0000FF"
-                ];
+            //TODO move species object out here and add this as a method
+            var species = {
+                colors:         [],
+                codes:          [],
+                chosen_ids:     [],
+                name_modifier:  false,
+                color_string:   '',
 
-                $.each(speciesCodes, function(i,v){
-                    if(colors[i].length > 0){
-                        speciesTileStyle += " [species2='"+ v +"'] {marker-fill:"+colors[i] +"}";
-                    }
-                });
-                //TODO store species to color mapping and add to side
-            }
+                generateColors :  function(){
+                    // Kelly colors and Boynton
+                    // http://jsfiddle.net/k8NC2/1/
+                    // TODO avoid some of these or automate with background bias?
+                    var _colors = [ "#A6BDD7", "#007D34","#803E75",
+                         "#00FF00", "#FF00FF", "#800000","#817066", "#0000FF", "#CEA262"
+                    ];
+                    var _thisObj = this;
+
+                    $.each(this.codes, function(i, code){
+                        if(_colors[i].length > 0){
+                            _thisObj.colors[i] = _colors[i];
+                        } else {
+                            _thisObj.colors[i] = "#fff";
+                        }
+                        _thisObj.color_string += " [species2='"+ code +"'] {marker-fill:"+ _thisObj.colors[i] +"}";
+                    });
+
+                    //console.log(this.color_string);
+                    $.each(species.chosen_ids, function(i, chosen){
+                        var $chosen = $(chosen);
+                        if($chosen.find('span.color-code').length < 1 ){
+                            $("<span>")
+                                .addClass('color-code')
+                                .width(10)
+                                .height(10)
+                                .css('margin', '4px 2px 0')
+                                .css('background-color', species.colors[i])
+                                .css('display', 'inline-block')
+                                .prependTo($chosen);
+                        }
+                    });
+                }
+            };
+
 
 // TREE FILTERS
-            var speciesNameModifier = false,
-                commNameModifier = false,
+            var commNameModifier = false,
                 boroNameModifier = false;
 
-            var speciesTileStyle = '';
-
             function updateSpeciesFilter() {
-                var speciesSelector = $("#speciesList"),
-                    species = new Array();
+                species.colors          =[];
+                species.codes           =[];
+                species.chosen_ids      =[];
+                species.name_modifier   =false;
+                species.color_string    ='';
 
-                speciesNameModifier = false;
+                species.name_modifier = false;
+                $("#species_name").html('');
+                $("#species_image").html('');
+                $("#species_note").text('').removeClass('scroll');
 
+                // get selected species
                 $("#speciesList option:selected").each(function () {
-                    var speciesCode = $(this).val();
+                    //TODO gather codes, generate colors, update selected species <option>, create style string
+                    var _code   = $(this).val(),
+                        _index  = $(this).index();
 
-                    species.push(speciesCode);
-                    //#TODO SHOW LEGEND
+                    species.codes.push(_code);
+                    species.chosen_ids.push('#speciesList_chzn_c_'+_index);
                 });
 
-                generateTileColors(species);
+                //TODO add color to each item in species
+                species.generateColors();
 
                 // TODO abstract info area for more general summaries
                 // add neighborhood and borough summaries (per species too?)
                 //
                 // SPECIES DETAIL INFO
-                $("#species_name").html('');
-                $("#species_image").html('');
-                $("#species_note").text('').removeClass('scroll');
 
-                if (species.length > 0){
-                    speciesNameModifier = " species2 in ('"+species.join("','")+"') ";
-
+                if (species.codes.length > 0){
+                    species.name_modifier = " species2 in ('"+species.codes.join("','")+"') ";
                     var speciesInfoModel = CartoDB.CartoDBCollection.extend({
                         table:'species_info',
                         sql: "select associations description, distribution, habitat, image, morphology,"+
-                            "species_code from species_info where species_code = '"+species[0]+"'"
-                        //sql: "select * from species_info where species_code = '"+species[0]+"'"
+                            "species_code from species_info where species_code = '"+species.codes[0]+"'"
+                        //sql: "select * from species_info where species_code = '"+species.codes[0]+"'"
                     });
 
                     var speciesInfos = new speciesInfoModel();
 
                     speciesInfos.fetch();
                     //console.log(speciesInfos);
+
+                    //update sidebar image and info when new species info selected
                     speciesInfos.bind('reset', function() {
                         speciesInfos.each(function(p) {
                             if (p.get('image') != ''){
@@ -328,7 +369,6 @@ $(document).ready(UTIL.loadEvents);
                             if (p.get('habitat') != ''){
                                 $("#species_note").text(p.get('habitat')).addClass('scroll');
                             }
-
                         });
                     });
                 }
@@ -383,8 +423,8 @@ $(document).ready(UTIL.loadEvents);
 // QUERY UPDATE
             function updateQuery(){
                 var hasModifiers = false;
-                var all_modifiers = [speciesNameModifier, commNameModifier, boroNameModifier];
-                console.log(all_modifiers);
+                var all_modifiers = [species.name_modifier, commNameModifier, boroNameModifier];
+                //console.log(all_modifiers);
 
                 $.each(all_modifiers, function(i,v){
                     if(v !==false){
@@ -414,12 +454,13 @@ $(document).ready(UTIL.loadEvents);
 
                 if (hasModifiers){
                     trees.setQuery(sql);
-                    trees.setStyle(treeTileStyle + speciesTileStyle + treeTileStyleEnd);
-                    //console.log(treeTileStyle + speciesTileStyle + treeTileStyleEnd);
+
+                    // color per species
+                    trees.setStyle(treeTileStyle + species.color_string + treeTileStyleEnd);
+                    //console.log(treeTileStyle + species.color_string + treeTileStyleEnd);
                 }else {
                     trees.hide();
                 }
-
             }
 
 // MENU
@@ -486,7 +527,7 @@ $(document).ready(UTIL.loadEvents);
                 $("#communityList").chosen({no_results_text: "No results matched"}); // jQuery version
             });
 
-//TOGGLE LAYER
+// TOGGLE LAYERS
             $('.filter').click(function(){
                 //TODO remove eval
                 var layerId = eval($(this).attr('id'));
@@ -499,7 +540,7 @@ $(document).ready(UTIL.loadEvents);
                     map.addLayer(layerId);
                 }
             });
-//GEOLOCATE
+// GEOLOCATE
             $('#locate').click(function(){
                 getLocation();
                 //TODO nearby summary?
@@ -515,10 +556,10 @@ $(document).ready(UTIL.loadEvents);
             }
 
             function showMap(position){
-                var zoom = 16,
-                    position = new L.LatLng(position.coords.latitude, position.coords.longitude);
+                var _zoom = 16,
+                    _position = new L.LatLng(position.coords.latitude, position.coords.longitude);
 
-                map.setView(position, zoom);
+                map.setView(_position, _zoom);
             };
         }
     }

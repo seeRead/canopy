@@ -282,7 +282,8 @@ $(document).ready(UTIL.loadEvents);
                     });
 
                     //console.log(this.color_string);
-                    $.each(species.chosen_ids, function(i, chosen){
+
+                    $.each(this.chosen_ids, function(i, chosen){
                         var $chosen = $(chosen);
                         if($chosen.find('span.color-code').length < 1 ){
                             $("<span>")
@@ -290,9 +291,11 @@ $(document).ready(UTIL.loadEvents);
                                 .width(10)
                                 .height(10)
                                 .css('margin', '4px 2px 0')
-                                .css('background-color', species.colors[i])
+                                .css('background-color', _thisObj.colors[i])
                                 .css('display', 'inline-block')
                                 .prependTo($chosen);
+                        } else {
+                            $chosen.find('span.color-code').css('background-color', _thisObj.colors[i]);
                         }
                     });
                 }
@@ -327,6 +330,7 @@ $(document).ready(UTIL.loadEvents);
 
                 //TODO add color to each item in species
                 species.generateColors();
+                //console.log(species);
 
                 // TODO abstract info area for more general summaries
                 // add neighborhood and borough summaries (per species too?)

@@ -11,6 +11,8 @@ Check the humans.txt for credits.  Thanks!
 - https://github.com/abelsonlive/ParksDataDive2012
 
 ##TODO
+- range slider for tree height
+- leaderboard and histogram (d3)
 - touch-friendly modals
 - tooltips
 - dynamic color legend for species, values (via backbone)

@@ -199,19 +199,27 @@ $(document).ready(UTIL.loadEvents);
                         _width      = 166,
                         _height     = 166,
                         _fov        = 120, //field of view
+                        _headings   = ["0", "120", "240"],
                         _url        = 'http://maps.googleapis.com/maps/api/streetview?size='+_width+
                             'x'+_height+'&location='+_lat+','+_lng+'&sensor=false' +
                             '&fov='+_fov,
                         _$template  = $('#myModal'),
                         _$modal     = _$template.clone().attr('id', 'thisModal'),
                         _$body      = _$modal.find('.modal-body'),
+                        _hasSpeciesData=false,
                         _link       = "https://maps.google.com/maps?q=&layer=c&cbll="+_lat+","+_lng+"&cbp=12",
-                        _thisSpeciesModel = speciesNames.find(function(p){ return p.get("species_code")==data.species2 }),
-                        _common_name = _thisSpeciesModel.get('common_name'),
-                        _common_name_encoded = encodeURIComponent(_common_name);
+                        _thisSpeciesModel = speciesNames.find(function(p){ return p.get("species_code") == data.species2;});
 
-                    var headings = ["0", "120", "240"];
-                    $.each(headings, function(i, heading){
+                    if (typeof(_thisSpeciesModel) !== 'undefined'){
+                        var _common_name = _thisSpeciesModel.get('common_name');
+                        var _common_name_encoded = encodeURIComponent(_common_name);
+
+                        _hasSpeciesData = true;
+                    } else {
+                        var _common_name  = "Tree species missing";
+                    }
+
+                    $.each(_headings, function(i, heading){
                         $('<a target="_blank" href="'+_link+'">'+
                             '<img src="'+_url+'&heading='+heading+'" width="'+_width+'" height="'+_height+'"/>'+
                             '</a>' )
@@ -221,15 +229,17 @@ $(document).ready(UTIL.loadEvents);
                     //$('<a target="_blank" href="'+_link+'">'+'<img src="'+_url+'" width="'+_width+'" height="'+_height+'"/>'+
                         //'</a>' ).prependTo(_$body);
 
-                    _$modal.find('.modal-label')
-                        .html('<a href="'+_link+'" target="_blank">'+
-                            _common_name+'</a> <small>| '+data.dbh+'\" '+
-                            '<a href="http://en.wikipedia.org/wiki/Diameter_at_breast_height" target="_blank"> dbh</a></small>');
+                        _$modal.find('.modal-label')
+                            .html('<a href="'+_link+'" target="_blank">'+
+                                _common_name+'</a> <small>| '+data.dbh+'\" '+
+                                '<a href="http://en.wikipedia.org/wiki/Diameter_at_breast_height" target="_blank"> dbh</a></small>');
 
-                    _$body.append('<hr/><ul><li><a href="http://en.wikipedia.org/w/index.php?search='+
-                            _common_name_encoded+'&go=Go" target="_blank">Wikipedia</a></li>'+
-                            '<li><a href="http://eol.org/search/?q='+_common_name_encoded+
-                            '&search=Go" target="_blank">Encyclopedia of Life</a></li>');
+                    if(_hasSpeciesData !== false){
+                        _$body.append('<hr/><ul><li><a href="http://en.wikipedia.org/w/index.php?search='+
+                                _common_name_encoded+'&go=Go" target="_blank">Wikipedia</a></li>'+
+                                '<li><a href="http://eol.org/search/?q='+_common_name_encoded+
+                                '&search=Go" target="_blank">Encyclopedia of Life</a></li>');
+                    }
 
                     _$modal.prependTo('body');
 

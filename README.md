@@ -12,6 +12,7 @@ Check the humans.txt for credits.  Thanks!
 
 ##TODO
 - range slider for tree height
+- zoom to neighborhood
 - leaderboard and histogram (d3)
 - touch-friendly modals
 - tooltips

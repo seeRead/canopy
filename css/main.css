@@ -23,11 +23,22 @@ body {
     background: black;
     margin-bottom: 10px;
 }
+#layers .btn{
+    margin-bottom: 5px;
+}
+.modal .thumbnails > li {
+    margin-bottom:0px;
+    margin-left: 10px;
+}
+.modal .thumbnails {
+    margin-left:0;
+}
+
 .note{
     color:#777;
 }
 #filters{
-    margin:0px;
+    margin:10px 0 0 0;
 }
 .nav li {
     cursor: pointer;
@@ -38,12 +49,11 @@ body {
     max-height:220px;
 }
 #species_note {
-    width: 220px;
-    height: 100px;
     font-size: 0.8em;
     overflow: auto;
 }
-.scroll{
+#species_note.scroll{
+    height: 100px;
     overflow-y: scroll;
 }
 

@@ -196,8 +196,8 @@ $(document).ready(UTIL.loadEvents);
                     // SHOW MODAL WITH GOOGLE STREET IMAGE, SPECIES DATA
                     var _lat        = latlng.lat.toString().substring(0, 7),
                         _lng        = latlng.lng.toString().substring(0, 7),
-                        _width      = 166,
-                        _height     = 166,
+                        _width      = 150,
+                        _height     = 150,
                         _fov        = 120, //field of view
                         _headings   = ["0", "120", "240"],
                         _url        = 'http://maps.googleapis.com/maps/api/streetview?size='+_width+
@@ -219,20 +219,29 @@ $(document).ready(UTIL.loadEvents);
                         var _common_name  = "Tree species missing";
                     }
 
+                    var _$thumbnails = $('<ul/>').attr('class', 'thumbnails');
                     $.each(_headings, function(i, heading){
-                        $('<a target="_blank" href="'+_link+'">'+
-                            '<img src="'+_url+'&heading='+heading+'" width="'+_width+'" height="'+_height+'"/>'+
-                            '</a>' )
-                            .prependTo(_$body);
+                        $('<img/>').attr({
+                            src       :  _url+'&heading='+heading,
+                            width     : _width,
+                            height    : _height
+                        }).appendTo($('<a/>').attr({
+                                target    : '_blank',
+                                href     : _link,
+                                class    : 'thumbnail'
+                            }).appendTo($('<li />')
+                                    .appendTo(_$thumbnails)
+                            )
+                        );
                     });
 
-                    //$('<a target="_blank" href="'+_link+'">'+'<img src="'+_url+'" width="'+_width+'" height="'+_height+'"/>'+
-                        //'</a>' ).prependTo(_$body);
+                    _$thumbnails.appendTo(_$body);
 
-                        _$modal.find('.modal-label')
-                            .html('<a href="'+_link+'" target="_blank">'+
-                                _common_name+'</a> <small>| '+data.dbh+'\" '+
-                                '<a href="http://en.wikipedia.org/wiki/Diameter_at_breast_height" target="_blank"> dbh</a></small>');
+                    // TODO just use jQuery
+                    _$modal.find('.modal-label')
+                        .html('<a href="'+_link+'" target="_blank">'+
+                            _common_name+'</a> <small>| '+data.dbh+'\" '+
+                            '<a href="http://en.wikipedia.org/wiki/Diameter_at_breast_height" target="_blank"> dbh</a></small>');
 
                     if(_hasSpeciesData !== false){
                         _$body.append('<hr/><ul><li><a href="http://en.wikipedia.org/w/index.php?search='+
@@ -240,12 +249,6 @@ $(document).ready(UTIL.loadEvents);
                                 '<li><a href="http://eol.org/search/?q='+_common_name_encoded+
                                 '&search=Go" target="_blank">Encyclopedia of Life</a></li>');
                     }
-
-                    _$modal.prependTo('body');
-
-                    _$modal.on('hidden', function () {
-                        _$modal.remove();
-                    });
 
                     _$modal.modal('show');
                 },
@@ -265,7 +268,6 @@ $(document).ready(UTIL.loadEvents);
                     "[dbh<1] { marker-fill: transparent; marker-width: 1; }";
             var treeTileStyleEnd = " }";
 
-            //TODO move species object out here and add this as a method
             var species = {
                 colors:         [],
                 codes:          [],
@@ -313,8 +315,7 @@ $(document).ready(UTIL.loadEvents);
 
 
 // TREE FILTERS
-            var commNameModifier = false,
-                boroNameModifier = false;
+            var locationModifier = false;
 
             function updateSpeciesFilter() {
                 species.colors          =[];
@@ -368,7 +369,6 @@ $(document).ready(UTIL.loadEvents);
                                 var img = new Image();
 
                                 img.src = p.get('image');
-                                img.width = 220;
                                 img.onload = function(){
                                     $("#species_image").append(img);
                                 }
@@ -390,54 +390,60 @@ $(document).ready(UTIL.loadEvents);
                 updateQuery();
             }
 
-            function updateCommunityFilter() {
-                var commSelector = $("#communityList"),
-                    communities = new Array();
+            function updateLocationFilter() {
+                var _boros              = [],
+                    _neighborhoods      = [],
+                    _locationModifiers  = [],
+                    _join_by_or         = "",
+                    _boroNameModifier = false,
+                    _neighborhoodNameModifier = false;
 
-                commNameModifier = false;
+                locationModifier = '';
 
-                $("#communityList option:selected").each(function () {
-                  communities.push($(this).val())
+                $("#locationList option:selected").each(function () {
+                    if($(this).parent()[0].label == "Neighborhoods"){
+                        _neighborhoods.push($(this).val());
+                    } else if ($(this).parent()[0].label == "Boroughs"){
+                        _boros.push($(this).val());
+                    } else {
+                    }
                 });
 
-                if (communities.length > 0){
-                  commNameModifier = " community_name in ('"+communities.join("','")+"') "
+                if (_neighborhoods.length > 0){
+                    _neighborhoodNameModifier = " community_name in ('"+_neighborhoods.join("','")+"') "
+                }
+                if (_boros.length > 0){
+                    _boroNameModifier = " boro in ('"+_boros.join("','")+"') ";
                 }
 
-                updateQuery();
-            }
+                _locationModifiers = [_neighborhoodNameModifier, _boroNameModifier];
 
-            function updateBoroFilter() {
-                var boroSelector = $("#communityList"),
-                    boro = new Array();
-
-                boroNameModifier = false;
-
-                $("#boroList option:selected").each(function () {
-                    boro.push($(this).val());
-                });
-
-                if (boro.length > 0){
-                    boroNameModifier = " boro in ('"+boro.join("','")+"') ";
+                //boro or neighborhood
+                for (var i=0;i<_locationModifiers.length;i++){
+                    if (_locationModifiers[i] != false){
+                        locationModifier += _join_by_or + _locationModifiers[i];
+                        _join_by_or = " OR ";
+                    }
                 }
 
+                // but still and against other filters
+                if(locationModifier.length > 0){
+                    locationModifier  = ' ( ' + locationModifier + ' ) ';
+                }
                 updateQuery();
             }
 
             $("#speciesList").change(function(e){
                 updateSpeciesFilter();
             });
-            $("#communityList").change(function(e){
-                updateCommunityFilter();
-            });
-            $("#boroList").change(function(e){
-                updateBoroFilter();
+            $("#locationList").change(function(e){
+                updateLocationFilter();
             });
 
 // QUERY UPDATE
             function updateQuery(){
                 var hasModifiers = false;
-                var all_modifiers = [species.name_modifier, commNameModifier, boroNameModifier];
+                var all_modifiers = [species.name_modifier, locationModifier];
                 //console.log(all_modifiers);
 
                 $.each(all_modifiers, function(i,v){
@@ -478,8 +484,6 @@ $(document).ready(UTIL.loadEvents);
             }
 
 // MENU
-            $("#boroList").chosen({no_results_text: "No results matched"}); // jQuery version
-
             var CartoDB = Backbone.CartoDB({
                 user: user_name // you should put your account name here
             });
@@ -522,24 +526,29 @@ $(document).ready(UTIL.loadEvents);
 
             // Neighborhood
             var nhNamesModel = CartoDB.CartoDBCollection.extend({
-                sql: "select name from nycd order by name asc", //public table
+                sql: "select name from nycd order by name asc" //public table
+                //sql: "select * from nycd order by name asc" //public table
             });
 
             var nhNames = new nhNamesModel();
-
             nhNames.fetch();
+
             nhNames.bind('reset', function() {
+                var $neighborhoods = $('<optgroup label="Neighborhoods"/>');
                 nhNames.each(function(p) {
-                    var newOption = $("<option>");
+                    var $newOption = $("<option>");
 
-                    newOption.text(p.get('name'));
-                    newOption.attr('value',p.get('name'));
-
-                    $('#communityList').append(newOption)
+                    $newOption
+                        .text(p.get('name'))
+                        .attr('value',p.get('name'))
+                        .appendTo($neighborhoods);
                 });
 
-                $("#communityList").chosen({no_results_text: "No results matched"}); // jQuery version
+                $('#locationList')
+                    .append($neighborhoods)
+                    .chosen({no_results_text: "No results matched"}); // jQuery version
             });
+
 
 // TOGGLE LAYERS
             $('.filter').click(function(){

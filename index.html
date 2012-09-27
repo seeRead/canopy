@@ -26,7 +26,7 @@
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="#">Canopy</a>
-                    <div class="nav-collapse collapse">
+                    <div class="nav">
                         <ul class="nav">
                           <li id="repo-info">
                           </li>
@@ -44,11 +44,11 @@
             <div class="row">
                 <div class="span9">
                     <div id="map"></div>
-                    <div id="submap">
-                        <p><strong>Layers : </strong>
-                            <button id="diversity" class="btn filter active">Diversity by Census Block</button>
-                            <button id="commonFamilies" class="btn filter">Common Tree Families</button>
-                            <button id="treeHeight" class="btn filter">Tree Height by Census Block</button>
+                    <div id="layers">
+                        <p>
+                            <button id="diversity" class="btn filter active">Diversity</button>
+                            <button id="treeHeight" class="btn filter">Tree Height</button>
+                            <button id="commonFamilies" class="btn filter">Common Trees</button>
                         </p>
                     </div>
                 </div>
@@ -56,16 +56,16 @@
                     <p><a id="locate" class="btn">Geolocate</a></p>
                     <hr/>
                     <form id="filters" class="hidden">
-                        <select data-placeholder="Choose a species..." id="speciesList" class="chzn-select" multiple=true>
+                      <select data-placeholder="&gt; Species" id="speciesList" class="chzn-select" multiple=true>
                         </select>
-                        <select data-placeholder="Choose a borough..." id="boroList" class="chzn-select" multiple=true>
+                        <select data-placeholder="&gt; Borough or neighborhood" id="locationList" class="chzn-select" multiple=true>
+                          <optgroup label="Boroughs">
                             <option value="Brooklyn">Brooklyn</option>
                             <option value="Manhattan">Manhattan</option>
                             <option value="Bronx">Bronx</option>
                             <option value="Queens">Queens</option>
                             <option value="Staten Island">Staten Island</option>
-                        </select>
-                        <select data-placeholder="Choose a community..." id="communityList" class="chzn-select" multiple=true>
+                          </optgroup>
                         </select>
                     </form>
                     <p class="note"><small>Diameter represents tree height</small></p>
@@ -83,7 +83,7 @@
                     <p>You can view the location of street trees throughout New York City via the filters on the right sidebar.</p>
                     <p>If you click on a tree, you view see what it looks like on the street and see the estimated diameter at breast height.</p>
                     <p>The buttons along the bottom of the map toggle other layers.</p>
-                    <p><em>Repeated clicking of tree dots may cause you to run over your personal Street View quota. A correct API implementation is forthcoming.</em></p>
+                    <p><em>Repeated clicking of tree dots may cause you to run over your personal Street View quota. If you wait long enough, this will reset. A correct API implementation is forthcoming.</em></p>
                 </div>
                 <div id="credits" class="span4">
                     <h3>About</h3>

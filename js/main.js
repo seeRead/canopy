@@ -1,4 +1,4 @@
-//TODO cleaner backbone implementation?
+//TODO backbone models : layer, tree, filter
 //TODO touch to click binding
 //TODO http://documentcloud.github.com/visualsearch/
 //
@@ -89,23 +89,20 @@ $(document).ready(UTIL.loadEvents);
 
             map.addLayer(basemap,true);
 
-//NEIGHBORHOOD OUTLINE
-            // var neighborhood_outline = new L.CartoDBLayer({
-            //   map: map,
-            //   user_name: user_name,
-            //   table_name: "nycd",
-            //   query: "SELECT * FROM {{table_name}}",
-            //   tile_style: "#{{table_name}}{polygon-fill:transparent; line-opacity:1; line-color: #FFFFFF;}",
-            //   interactivity: "cartodb_id",
-            //   featureClick: function(ev, latlng, pos, data) { },
-            //   featureOver: function(){},
-            //   featureOut: function(){},
-            //   attribution: "CartoDB",
-            //   auto_bound: false
-            // });
-            // map.addLayer(neighborhood_outline);
+            var neighborhoodLayer = new L.CartoDBLayer({
+                map: map,
+                user_name: user_name,
+                table_name: "nycd",
+                query: "SELECT * FROM {{table_name}}",
+                tile_style: "#{{table_name}}{polygon-fill:transparent; line-opacity:1; line-color: #FFFFFF;}",
+                interactivity: "cartodb_id",
+                featureClick: function(ev, latlng, pos, data) { },
+                featureOver: function(){},
+                featureOut: function(){},
+                attribution: "CartoDB",
+                auto_bound: false
+            });
 
-            //diversityByBlock choropleth
             var diversity = new L.CartoDBLayer({
                 map: map,
                 user_name: user_name,
@@ -268,6 +265,90 @@ $(document).ready(UTIL.loadEvents);
                     "[dbh<1] { marker-fill: transparent; marker-width: 1; }";
             var treeTileStyleEnd = " }";
 
+// PALETTE
+            var colors = [];
+
+            // Boynton colors
+            colors.push(
+                "#0000FF",
+                "#00FF00",
+                "#FF00FF",
+                //"#FF8080",
+                //"#FFFF00",
+                "#FF8000",
+                //"#808080",
+                "#800000"
+                //"#FF0000"
+            );
+
+            // Kelly colors
+            colors.push(
+                "#A6BDD7",
+                "#FF6800",
+
+                "#FFB300",
+                "#803E75",
+                "#C10020",
+                "#CEA262"
+                //"#817066"
+            );
+
+            // kellys extended
+            colors.push(
+                "#00538A",
+                "#007D34",
+                "#53377A",
+                "#93AA00",
+
+                //"#F6768E",
+                "#FF7A5C",
+                //"#FF8E00",
+                "#B32851",
+                "#F4C800",
+                //"#7F180D",
+                "#593315",
+                "#F13A13",
+                "#232C16"
+            );
+
+
+            var palette = {
+                id: 'palette',
+                width: 400,
+                height: 5,
+
+                context : "2d",
+                colors : colors,
+                initialize : function() {
+                    $('<canvas/>').attr({
+                            id: this.id,
+                            width: this.width,
+                            height: this.height
+                        })
+                        .prependTo($('body'));
+
+
+                    var _c=document.getElementById(this.id);
+                    var _ctx =_c.getContext(this.context);
+
+                    var _x = 0,
+                        _y = 0;
+
+                    var _width = this.width / (this.colors.length);
+                    var _height = this.height;
+                    $.each(this.colors, function (i, color){
+
+                    _ctx.fillStyle=color;
+                        _ctx.fillRect(_x, 0, _width, _height);
+                        _x += _width;
+                    });
+
+                },
+            };
+            //palette.initialize();
+
+
+// SPECIES
             var species = {
                 colors:         [],
                 codes:          [],
@@ -276,23 +357,17 @@ $(document).ready(UTIL.loadEvents);
                 color_string:   '',
 
                 generateColors :  function(){
-                    // Kelly colors and Boynton
                     // http://jsfiddle.net/k8NC2/1/
                     // TODO avoid some of these or automate with background bias?
-                    var _colors = [ "#A6BDD7", "#007D34","#803E75",
-                         "#00FF00", "#FF00FF", "#800000","#817066", "#0000FF", "#CEA262"
-                    ];
-                    var _thisObj = this;
+
+                    var _thisSpecies = this;
 
                     $.each(this.codes, function(i, code){
-                        if(_colors[i].length > 0){
-                            _thisObj.colors[i] = _colors[i];
-                        } else {
-                            _thisObj.colors[i] = "#fff";
-                        }
-                        _thisObj.color_string += " [species2='"+ code +"'] {marker-fill:"+ _thisObj.colors[i] +"}";
+                        _thisSpecies.colors[i] = colors[i % colors.length];
+                        _thisSpecies.color_string += " [species2='"+ code +"'] {marker-fill:"+ _thisSpecies.colors[i] +"}";
                     });
 
+                    //console.log(this.colors);
                     //console.log(this.color_string);
 
                     $.each(this.chosen_ids, function(i, chosen){
@@ -303,11 +378,11 @@ $(document).ready(UTIL.loadEvents);
                                 .width(10)
                                 .height(10)
                                 .css('margin', '4px 2px 0')
-                                .css('background-color', _thisObj.colors[i])
+                                .css('background-color', _thisSpecies.colors[i])
                                 .css('display', 'inline-block')
                                 .prependTo($chosen);
                         } else {
-                            $chosen.find('span.color-code').css('background-color', _thisObj.colors[i]);
+                            $chosen.find('span.color-code').css('background-color', _thisSpecies.colors[i]);
                         }
                     });
                 }

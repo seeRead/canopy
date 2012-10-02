@@ -18,6 +18,7 @@ Check the humans.txt for credits.  Thanks!
 - small screen fixes
 - slider for circle size
 - range slider for tree height
+- zoom to neighborhood
 - leaderboard and histogram (d3)
 - touch-friendly modals
 - tooltips

@@ -40,7 +40,6 @@ $(document).ready(UTIL.loadEvents);
     CANOPY.common = {
         init : function(){
 // CONFIG
-            // disable cache for ajax reguests
             $.ajaxSetup ({
                 //cache: false
             });
@@ -60,11 +59,11 @@ $(document).ready(UTIL.loadEvents);
                         if(repo_data) {
                             //var watchers_link = $('<a>').addClass('watchers').attr('href', url+'/watchers').text(repo_data.watchers);
                             //var forks_link = $('<a>').addClass('forks').attr('href', url+'/network').text(repo_data.forks);
-
                             //$div.prepend(watchers_link);
                             //$div.prepend(forks_link);
                             var updated_at = $('<a class="repo-updated" href="'+url+'" target="_blank">'+
-                                '<small>Updated <time class="timeago" datetime="'+repo_data.updated_at+'"></time></small></a>');
+                                '<small>Updated <time class="timeago" datetime="'+repo_data.pushed_at+
+                                '"></time></small></a>');
 
                             updated_at.find('.timeago').timeago();
                             $li.prepend(updated_at);
@@ -574,8 +573,10 @@ $(document).ready(UTIL.loadEvents);
             //console.log(speciesData);
 
             // species_name,_codes, and totals
+            // NB: about 100 species of trees are not named in the DB :( 
             var speciesNamesModel = CartoDB.CartoDBCollection.extend({
-                sql: "select common_name, species_code, total from species_name_codes where common_name != '' and total>0 order by total desc", //public table
+                sql: "select common_name, species_code, total from species_name_codes "+
+                "where common_name != '' and total>0 order by total desc", //public table
             });
 
             var speciesNames = new speciesNamesModel();
@@ -593,6 +594,7 @@ $(document).ready(UTIL.loadEvents);
 
                     $('#speciesList').append(newOption);
                 });
+
                 $("#speciesList").chosen({no_results_text: "No results matched"}); // jQuery version
 
                 //SHOW filters

@@ -1,4 +1,6 @@
 #Canopy
+**IMPORTANT** This app needs an update in order to function.  See the note [here](https://github.com/Vizzuality/cartodb-leaflet).
+
 Check it out [here]( http://seeread.github.com/canopy).
 
 An exploratory tool for New York City street trees.  Built with [CartoDB](http://cartodb.com/), [Backbone](http://backbonejs.org/) , [Bootstrap](http://twitter.github.com/bootstrap/), [H5BP](http://html5boilerplate.com/), 

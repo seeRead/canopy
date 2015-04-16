@@ -1,9 +1,6 @@
 //TODO backbone models : layer, tree, filter
 //TODO touch to click binding
 //TODO http://documentcloud.github.com/visualsearch/
-//
-//* DOM Based Routing
-//* http://paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/
 ;
 UTIL = {
     fire : function(func,funcname, args){
@@ -81,14 +78,14 @@ $(document).ready(UTIL.loadEvents);
             var zoom = 11;
 
             // is our Leaflet map object
-            //TODO brighter background map!
             var map = new L.Map('map').setView(position, zoom),
-                tileUrl = 'http://{s}.tiles.mapbox.com/v3/cartodb.map-u6vat89l/{z}/{x}/{y}.png',
+                //temporary replacement
+                //tileUrl = 'http://{s}.tiles.mapbox.com/v4/timetravlr.lle01267/{z}/{x}/{y}.png',
+                tileUrl = 'http://api.tiles.mapbox.com/v4/timetravlr.lle01267/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidGltZXRyYXZsciIsImEiOiJLMHR1OEJRIn0.hcJX-Q1bZvz37giCmLUtrA',
                 basemap = new L.TileLayer(tileUrl, {attribution: "Stamen"});
-
             map.addLayer(basemap,true);
 
-            var neighborhoodLayer = new L.CartoDBLayer({
+            var params ={
                 map: map,
                 user_name: user_name,
                 table_name: "nycd",
@@ -100,9 +97,11 @@ $(document).ready(UTIL.loadEvents);
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
-            });
+            };
+            var neighborhoodLayer = cartodb.createLayer( map, params)
+            neighborhoodLayer.addTo(map);
 
-            var diversity = new L.CartoDBLayer({
+            var params = {
                 map: map,
                 user_name: user_name,
                 table_name: "nycb2010",
@@ -126,12 +125,11 @@ $(document).ready(UTIL.loadEvents);
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
-            });
+            };
+            var diversity = cartodb.createLayer( map, params)
+            diversity.addTo(map);
 
-            // SETS DIVERSITY AS FIRST LAYER
-            map.addLayer(diversity); // btn active in HTML
-
-            var commonFamilies = new L.CartoDBLayer({
+            var params = {
                 map: map,
                 user_name: user_name,
                 table_name: "alltrees_master",
@@ -154,9 +152,11 @@ $(document).ready(UTIL.loadEvents);
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
-            });
+            };
+            var commonFamilies = cartodb.createLayer( map, params)
+            commonFamilies.addTo(map);
 
-            var treeHeight = new L.CartoDBLayer({
+            var params = {
                 map: map,
                 user_name: user_name,
                 table_name: "alltrees_master",
@@ -178,10 +178,11 @@ $(document).ready(UTIL.loadEvents);
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
-            });
+            };
+            var treeHeight = cartodb.createLayer( map, params)
+            treeHeight.addTo(map);
 
-
-            var trees = new L.CartoDBLayer({
+            var params = {
                 map: map,
                 user_name: user_name,
                 table_name: "alltrees_master",
@@ -254,7 +255,9 @@ $(document).ready(UTIL.loadEvents);
                 featureOut: function(){},
                 attribution: "CartoDB",
                 auto_bound: false
-            });
+            };
+            var trees = cartodb.createLayer( map, params);
+            trees.addTo(map);
 
             var treeTileStyle = "#{{table_name}}"+
                     "{ line-color:#FFFFFF; line-width:1; line-opacity:1; marker-width: 2; marker-fill:#fff; marker-width: 13; " +
@@ -518,7 +521,7 @@ $(document).ready(UTIL.loadEvents);
             function updateQuery(){
                 var hasModifiers = false;
                 var all_modifiers = [species.name_modifier, locationModifier];
-                //console.log(all_modifiers);
+                console.log(all_modifiers);
 
                 $.each(all_modifiers, function(i,v){
                     if(v !==false){
@@ -527,7 +530,7 @@ $(document).ready(UTIL.loadEvents);
                 });
 
                 if(!map.hasLayer(trees) && hasModifiers){
-                    map.addLayer(trees);
+                  trees.addTo(map);
                 }
 
                 // update map
@@ -547,11 +550,12 @@ $(document).ready(UTIL.loadEvents);
                 }
 
                 if (hasModifiers){
-                    trees.setQuery(sql);
-
-                    // color per species
-                    trees.setStyle(treeTileStyle + species.color_string + treeTileStyleEnd);
-                    //console.log(treeTileStyle + species.color_string + treeTileStyleEnd);
+                    //http://docs.cartodb.com/cartodb-platform/cartodb-js.html#sublayersetsqlsql
+                    //TODO why are the trees not getting the setSQL and setCartoCSS methods?
+                    trees
+                      .setSQL(sql)
+                      .setCartoCSS(treeTileStyle + species.color_string + treeTileStyleEnd)
+                      .show();
                 }else {
                     trees.hide();
                 }
@@ -630,14 +634,15 @@ $(document).ready(UTIL.loadEvents);
 // TOGGLE LAYERS
             $('.filter').click(function(){
                 //TODO remove eval
-                var layerId = eval($(this).attr('id'));
+                var layer = eval($(this).attr('id'));
 
-                if(map.hasLayer(layerId)){
+                //console.log(layer);
+                if(map.hasLayer(layer)){
                     $(this).removeClass('active');
-                    map.removeLayer(layerId);
+                    layer.hide()
                 } else {
                     $(this).addClass('active');
-                    map.addLayer(layerId);
+                    layer.show();
                 }
             });
 // GEOLOCATE

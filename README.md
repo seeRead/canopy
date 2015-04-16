@@ -1,5 +1,12 @@
 #Canopy
-**IMPORTANT** This app needs an update in order to function.  See the note [here](https://github.com/Vizzuality/cartodb-leaflet).
+**IMPORTANT** This app needs an update in order to function.  See the note [here](https://github.com/Vizzuality/cartodb-leaflet) and the links below
+
+- <http://blog.cartodb.com/mapbox/>
+- <https://github.com/CartoDB/cartodb.js/tree/3.13.5>
+- <https://github.com/CartoDB/cartodb.js/blob/develop/UPGRADE.md>
+
+---
+
 
 Check it out [here]( http://seeread.github.com/canopy).
 
